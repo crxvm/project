@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Organization (
 COMMENT ON TABLE Organization IS 'Организация';
 
 CREATE TABLE IF NOT EXISTS Office (
-    id         	INTEGER              COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT ,
+    id        	INTEGER              COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT ,
 	org_Id		INTEGER	NOT NULL	 COMMENT 'Индентификатор организации',
     version   	INTEGER NOT NULL     COMMENT 'Служебное поле hibernate',
     name		VARCHAR(50) 		 COMMENT 'Имя',
