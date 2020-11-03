@@ -25,3 +25,7 @@ INSERT INTO User (version, office_Id, firstName) VALUES(0, 3, 'User 2');
 INSERT INTO User (version, office_Id, firstName) VALUES(0, 4, 'User 1');
 
 INSERT INTO User (version, office_Id, firstName) VALUES(0, 4, 'User 2');
+
+INSERT INTO Document (version, docCode, docName) VALUES (0, 1, 'Passport');
+
+INSERT INTO Document (version, docCode, docName) VALUES (0, 2, 'Driver License');

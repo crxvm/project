@@ -39,16 +39,9 @@ CREATE TABLE IF NOT EXISTS User
     phone           VARCHAR(15)             COMMENT 'Телефонный номер',
     isActive        BOOLEAN                 COMMENT 'Статуc',
     document_Id     INTEGER                 COMMENT 'Идентификатор документа из справочника',
-    docCode         VARCHAR(10)             COMMENT 'Код документа',
-    /*docName         VARCHAR(50)             COMMENT 'Название документа',*/
-    /* это поле уже имеется в таблице Document */
     docNumber       VARCHAR(10)             COMMENT 'Номер документа',
     docDate         DATE                    COMMENT 'Дата выдачи документа',
     citizenship_Id  INTEGER                 COMMENT 'Идентификатор страны',
-    /*
-    citizenshipCode VARCHAR(5)              COMMENT 'Код страны',
-    уже имеется в таблице Country
-    */
     isIdentified    BOOLEAN                 COMMENT 'Статус'
 );
 
@@ -57,14 +50,16 @@ COMMENT ON TABLE User IS 'Пользователь';
 CREATE TABLE IF NOT EXISTS Document
 (
     id          INTEGER         COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
-    docNumber   VARCHAR(10)     COMMENT 'Номер документа' ,
+    version         INTEGER     NOT NULL    COMMENT 'Служебное поле hibernate',
+    docCode   VARCHAR(10)     COMMENT 'Код документа' ,
     docName     VARCHAR(50)     COMMENT 'Название документа',
-    UNIQUE (docNumber, docName)
+    UNIQUE (docCode, docName)
 );
 
 CREATE TABLE IF NOT EXISTS Country
 (
     id              INTEGER     COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
+    version         INTEGER     NOT NULL    COMMENT 'Служебное поле hibernate',
     citizenshipCode VARCHAR(5)  COMMENT 'Код страны',
     citizenshipName VARCHAR(25) COMMENT 'Название страны',
     UNIQUE (citizenshipCode, citizenshipName)
