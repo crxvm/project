@@ -50,7 +50,7 @@ COMMENT ON TABLE User IS 'Пользователь';
 CREATE TABLE IF NOT EXISTS Document
 (
     id          INTEGER         COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
-    version         INTEGER     NOT NULL    COMMENT 'Служебное поле hibernate',
+    version     INTEGER     NOT NULL    COMMENT 'Служебное поле hibernate',
     docCode   VARCHAR(10)     COMMENT 'Код документа' ,
     docName     VARCHAR(50)     COMMENT 'Название документа',
     UNIQUE (docCode, docName)
