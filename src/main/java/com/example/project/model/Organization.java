@@ -7,6 +7,9 @@ import javax.persistence.*;
 @Data
 @Entity(name = "Organization")
 public class Organization {
+    public Organization() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -36,4 +39,13 @@ public class Organization {
     @Column(name = "is_Active")
     private Boolean isActive;
 
+    public Organization(String name, String fullName, String inn, String kpp, String address, String phone, Boolean isActive) {
+        this.name = name;
+        this.fullName = fullName;
+        this.inn = inn;
+        this.kpp = kpp;
+        this.address = address;
+        this.phone = phone;
+        this.isActive = isActive;
+    }
 }

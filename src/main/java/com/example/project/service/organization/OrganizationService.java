@@ -4,4 +4,5 @@ import com.example.project.view.OrganizationFullView;
 
 public interface OrganizationService {
     OrganizationFullView getById(Long id);
+    void save(OrganizationFullView organizationFullView);
 }
