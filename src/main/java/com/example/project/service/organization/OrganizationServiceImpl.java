@@ -14,6 +14,7 @@ public class OrganizationServiceImpl implements OrganizationService{
     private final OrganizationDao dao;
     private final MapperFacade mapperFacade;
 
+
     @Autowired
     public OrganizationServiceImpl(OrganizationDao dao, MapperFacade mapperFacade) {
         this.dao = dao;
@@ -30,10 +31,13 @@ public class OrganizationServiceImpl implements OrganizationService{
     @Transactional
     @Override
     public void save(OrganizationFullView organizationFullView) {
-        Organization organization = new Organization(organizationFullView.name, organizationFullView.fullName,
-                organizationFullView.inn, organizationFullView.kpp, organizationFullView.address, organizationFullView.phone,
-                organizationFullView.is_Active);
-        dao.save(organization);
+        dao.save(mapperFacade.map(organizationFullView, Organization.class));
     }
 
-}
+
+    @Override
+    @Transactional
+    public void update(OrganizationFullView organizationFullView) {
+        dao.update(mapperFacade.map(organizationFullView, Organization.class));
+    }
+    }

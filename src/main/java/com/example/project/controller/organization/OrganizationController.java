@@ -31,4 +31,13 @@ public class OrganizationController {
         organizationService.save(organizationFullView);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
+    @PostMapping("/update")
+    public void update(@RequestBody OrganizationFullView organizationFullView) {
+        organizationService.update(organizationFullView);
+    }
+
 }

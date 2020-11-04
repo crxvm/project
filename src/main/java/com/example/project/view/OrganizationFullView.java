@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModel;
 @ApiModel(description = "Организация")
 public class OrganizationFullView {
 
-    public String id;
+    public Long id;
     public String name;
     public String fullName;
     public String inn;
