@@ -1,8 +1,6 @@
 package com.example.project.model;
 
 import lombok.Data;
-import org.hibernate.annotations.GeneratorType;
-import org.springframework.jdbc.core.SqlReturnType;
 
 import javax.persistence.*;
 
@@ -20,7 +18,7 @@ public class Organization {
     @Column(name="name", length = 50, nullable = false)
     private String name;
 
-    @Column(name="FullName", length = 50, nullable = false)
+    @Column(name="full_name", length = 50, nullable = false)
     private String fullName;
 
     @Column(name = "inn", length = 25, nullable = false)
@@ -35,7 +33,7 @@ public class Organization {
     @Column(name = "phone", length = 15)
     private String phone;
 
-    @Column(name = "isActive")
+    @Column(name = "is_Active")
     private Boolean isActive;
 
 }

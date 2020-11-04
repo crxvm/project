@@ -15,12 +15,10 @@ public class Document {
     @Version
     private Integer version;
 
-    @Column(name = "docCode")
+    @Column(name = "doc_Code")
     private String docCode;
 
-    @Column(name = "docName")
+    @Column(name = "doc_Name")
     private String docName;
-
-
 
 }
