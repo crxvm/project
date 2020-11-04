@@ -10,7 +10,4 @@ public class BellIntegratorProjectApplication {
 		SpringApplication.run(BellIntegratorProjectApplication.class, args);
 	}
 
-
-
-
 }

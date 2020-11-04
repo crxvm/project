@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @Api(value = "DocumentController", description = "Справочная информация о документах")
 @RestController
-@RequestMapping(value = "/api/docs")
+@RequestMapping(value = "/api/docs", produces = APPLICATION_JSON_VALUE)
 public class DocumentController {
     private final DocumentService documentService;
 

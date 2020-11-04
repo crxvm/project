@@ -1,17 +1,11 @@
 package com.example.project.model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Data
-@Getter
-@Setter
 @Entity(name = "Document")
-@NoArgsConstructor
 public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +15,12 @@ public class Document {
     @Version
     private Integer version;
 
-    @Column(name = "doc_Code")
+    @Column(name = "docCode")
     private String docCode;
 
-    @Column(name = "doc_Name")
+    @Column(name = "docName")
     private String docName;
+
+
 
 }
