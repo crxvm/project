@@ -18,10 +18,6 @@ public class Organization {
     @Version
     private Integer version = 0;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     @Column(name="name", length = 50, nullable = false)
     private String name;
 

@@ -38,7 +38,8 @@ public class OrganizationDaoImpl implements OrganizationDao {
 
     @Override
     public Organization list(String name, String inn, Boolean is_Active) {
-        Query q = em.createQuery("Select O from Organization O where O.name =:name and  O.inn LIKE CONCAT('%',:inn ,'%')");
+        Query q = em.createQuery("Select O from Organization O where O.name =:name " +
+                "and  O.inn LIKE CONCAT('%',:inn ,'%')");
 
         if(inn == null || inn == "") {
             inn = "%";
