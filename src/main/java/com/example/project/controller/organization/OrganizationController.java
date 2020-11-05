@@ -2,11 +2,14 @@ package com.example.project.controller.organization;
 
 import com.example.project.service.organization.OrganizationService;
 import com.example.project.view.OrganizationFullView;
+import com.example.project.view.OrganizationListView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Api(value = "OrganizationController", description = "Информация об организациях")
 @RestController
@@ -40,4 +43,12 @@ public class OrganizationController {
         organizationService.update(organizationFullView);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
+    @PostMapping("/list")
+    public List<OrganizationListView> list(@RequestBody OrganizationFullView organizationFullView) {
+        return organizationService.list(organizationFullView.id, organizationFullView.inn, organizationFullView.is_Active);
+    }
 }

@@ -16,7 +16,7 @@ public class Organization {
     private Long id;
 
     @Version
-    private Integer version;
+    private Integer version = 0;
 
     public void setId(Long id) {
         this.id = id;

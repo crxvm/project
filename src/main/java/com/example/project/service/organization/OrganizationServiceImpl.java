@@ -4,10 +4,13 @@ import com.example.project.dao.organization.OrganizationDao;
 import com.example.project.model.Organization;
 import com.example.project.model.mapper.MapperFacade;
 import com.example.project.view.OrganizationFullView;
+import com.example.project.view.OrganizationListView;
 import org.hibernate.loader.plan.exec.internal.OneToManyLoadQueryDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class OrganizationServiceImpl implements OrganizationService{
@@ -26,6 +29,13 @@ public class OrganizationServiceImpl implements OrganizationService{
     public OrganizationFullView getById(Long id) {
         Organization organization = dao.getOrganizationById(id);
         return mapperFacade.map(organization, OrganizationFullView.class);
+    }
+
+    @Transactional
+    @Override
+    public List<OrganizationListView> list(Long id, String inn, Boolean is_Active) {
+        List<Organization> organizations = dao.list(id, inn, is_Active);
+        return mapperFacade.mapAsList(organizations, OrganizationListView.class);
     }
 
     @Transactional
