@@ -33,9 +33,9 @@ public class OrganizationServiceImpl implements OrganizationService{
 
     @Transactional
     @Override
-    public List<OrganizationListView> list(Long id, String inn, Boolean is_Active) {
-        List<Organization> organizations = dao.list(id, inn, is_Active);
-        return mapperFacade.mapAsList(organizations, OrganizationListView.class);
+    public OrganizationListView list(String name, String inn, Boolean is_Active) {
+        Organization organizations = dao.list(name, inn, is_Active);
+        return mapperFacade.map(organizations, OrganizationListView.class);
     }
 
     @Transactional

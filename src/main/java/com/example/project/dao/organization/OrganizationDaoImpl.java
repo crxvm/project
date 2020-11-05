@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Repository
@@ -36,13 +37,14 @@ public class OrganizationDaoImpl implements OrganizationDao {
     }
 
     @Override
-    public List<Organization> list(Long id, String inn, Boolean is_Active) {
-        Query query =  em.createQuery("SELECT o FROM Organization o " +
-                "where o.id =: id and o.inn = :inn and o.isActive = :is_Active", Organization.class);
-        query.setParameter("id", id);
-        query.setParameter("inn", inn);
-        query.setParameter("is_Active", is_Active);
-        return query.getResultList();
+    public Organization list(String name, String inn, Boolean is_Active) {
+        Query q = em.createQuery("Select O from Organization O where O.name =:name and  O.inn LIKE CONCAT('%',:inn ,'%')");
 
+        if(inn == null || inn == "") {
+            inn = "%";
+        }
+        q.setParameter("inn", inn);
+        q.setParameter("name", name);
+        return (Organization) q.getResultList().get(0);
     }
 }
