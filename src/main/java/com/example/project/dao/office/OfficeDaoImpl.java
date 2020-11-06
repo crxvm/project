@@ -37,13 +37,13 @@ public class OfficeDaoImpl implements OfficeDao {
     public Office list(Integer orgId, String name, String phone, Boolean isActive) {
         Query q = em.createQuery(
                 "SELECT o FROM Office o WHERE o.orgId = :orgId " +
-                        "and o.name LIKE CONCAT('%',:name ,'%')" +
-                        "and o.phone LIKE CONCAT('%',:phone ,'%')" +
+                        "and (o.name is null or o.name LIKE CONCAT('%',:name ,'%')) " +
+                        "and (o.phone is null or o.phone LIKE CONCAT('%',:phone ,'%'))" +
                         "and o.isActive = :isActive");
-        if(name == null || name == "") {
+        if(name == "") {
             name = "%";
         }
-        if(phone == null || phone == "") {
+        if(phone == "") {
             phone = "%";
         }
         q.setParameter("orgId" ,orgId);
