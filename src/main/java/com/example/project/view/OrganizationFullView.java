@@ -13,6 +13,6 @@ public class OrganizationFullView {
     public String kpp;
     public String address;
     public String phone;
-    public Boolean is_Active;
+    public Boolean isActive;
 
 }

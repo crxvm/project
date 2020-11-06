@@ -33,8 +33,8 @@ public class OrganizationServiceImpl implements OrganizationService{
 
     @Transactional
     @Override
-    public OrganizationListView list(String name, String inn, Boolean is_Active) {
-        Organization organizations = dao.list(name, inn, is_Active);
+    public OrganizationListView list(String name, String inn, Boolean isActive) {
+        Organization organizations = dao.list(name, inn, isActive);
         return mapperFacade.map(organizations, OrganizationListView.class);
     }
 

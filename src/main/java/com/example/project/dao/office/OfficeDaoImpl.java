@@ -1,6 +1,6 @@
 package com.example.project.dao.office;
 
-import com.example.project.view.Office;
+import com.example.project.model.Office;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -34,19 +34,22 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     @Override
-    public Office list(String org_Id, String name, String phone, Boolean is_Active) {
+    public Office list(Integer orgId, String name, String phone, Boolean isActive) {
         Query q = em.createQuery(
-                "SELECT o FROM Office o WHERE o.org_id = :org_id " +
+                "SELECT o FROM Office o WHERE o.orgId = :orgId " +
                         "and o.name LIKE CONCAT('%',:name ,'%')" +
-                        "and o.phone LIKE CONCAT('%',:phone ,'%')");
+                        "and o.phone LIKE CONCAT('%',:phone ,'%')" +
+                        "and o.isActive = :isActive");
         if(name == null || name == "") {
             name = "%";
         }
         if(phone == null || phone == "") {
-            name = "%";
+            phone = "%";
         }
+        q.setParameter("orgId" ,orgId);
         q.setParameter("name", name);
         q.setParameter("phone", phone);
+        q.setParameter("isActive", isActive);
         return (Office) q.getResultList().get(0);
     }
 }

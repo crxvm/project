@@ -49,6 +49,6 @@ public class OrganizationController {
             @ApiResponse(code = 500, message = "Failure")})
     @PostMapping("/list")
     public OrganizationListView list(@RequestBody OrganizationFullView organizationFullView) {
-        return organizationService.list(organizationFullView.name, organizationFullView.inn, organizationFullView.is_Active);
+        return organizationService.list(organizationFullView.name, organizationFullView.inn, organizationFullView.isActive);
     }
 }

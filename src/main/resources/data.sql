@@ -2,13 +2,13 @@ INSERT INTO Organization (version, name, FullName, inn, kpp, address) VALUES (0,
 
 INSERT INTO Organization (version, name, FullName, inn, kpp, address) VALUES (0, 'SBERBANK', 'PAO SBERBANK', 6543123, 23467721, 'ул.Вавилова');
 
-INSERT INTO Office (version, org_Id, name) VALUES(0, 1, 'GAZPROM Office 1');
+INSERT INTO Office (version, org_Id, name) VALUES(0, 1, 'GAZPROM OfficeFullView 1');
 
-INSERT INTO Office (version, org_Id, name) VALUES(0, 1, 'GAZPROM Office 2');
+INSERT INTO Office (version, org_Id, name) VALUES(0, 1, 'GAZPROM OfficeFullView 2');
 
-INSERT INTO Office (version, org_Id, name) VALUES(0, 2, 'SBERBANK Office 1');
+INSERT INTO Office (version, org_Id, name) VALUES(0, 2, 'SBERBANK OfficeFullView 1');
 
-INSERT INTO Office (version, org_Id, name) VALUES(0, 2, 'SBERBANK Office 2');
+INSERT INTO Office (version, org_Id, name) VALUES(0, 2, 'SBERBANK OfficeFullView 2');
 
 INSERT INTO User (version, office_Id, firstName) VALUES(0, 1, 'User 1');
 

@@ -1,4 +1,4 @@
-package com.example.project.model.mapper;
+package com.example.project.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,8 +17,8 @@ public class Office {
     @Version
     private Integer version = 0;
 
-    @Column(name ="org_Id", nullable = false)
-    private Integer org_id;
+    @Column(name ="org_Id")
+    private Integer orgId;
 
     @Column(name = "name")
     private String name;
@@ -30,5 +30,5 @@ public class Office {
     private String phone;
 
     @Column(name = "is_Active")
-    private Boolean is_Active;
+    private Boolean isActive;
 }

@@ -1,10 +1,10 @@
 package com.example.project.view;
 
-public class Office {
+public class OfficeFullView {
     public Long id;
-    public Integer org_Id;
+    public Integer orgId;
     public String name;
     public String address;
     public String phone;
-    public Boolean is_Active;
+    public Boolean isActive;
 }
