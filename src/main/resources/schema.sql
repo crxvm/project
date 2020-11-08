@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS Organization
 
 );
 
-
 CREATE TABLE IF NOT EXISTS Office
 (
     id       INTEGER                    COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
@@ -25,6 +24,10 @@ CREATE TABLE IF NOT EXISTS Office
 
 );
 
+CREATE INDEX IX_Organization_Id ON Office (org_Id);
+ALTER TABLE Office
+    ADD FOREIGN KEY (org_Id) REFERENCES Organization (id);
+
 CREATE TABLE IF NOT EXISTS User
 (
     id              INTEGER                 COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
@@ -36,12 +39,28 @@ CREATE TABLE IF NOT EXISTS User
     position        VARCHAR(50)             COMMENT 'Должность',
     phone           VARCHAR(15)             COMMENT 'Телефонный номер',
     is_Active        BOOLEAN                 COMMENT 'Статуc',
-    document_Id     INTEGER                 COMMENT 'Идентификатор документа из справочника',
-    doc_Number       VARCHAR(10)             COMMENT 'Номер документа',
-    doc_Date         DATE                    COMMENT 'Дата выдачи документа',
     citizenship_Id  INTEGER                 COMMENT 'Идентификатор страны',
     is_Identified    BOOLEAN                 COMMENT 'Статус'
 );
+
+CREATE INDEX IX_Office_Id ON User (office_Id);
+ALTER TABLE User
+    ADD FOREIGN KEY (office_Id) REFERENCES Office (id);
+
+CREATE TABLE IF NOT EXISTS UserDocument
+(
+    user_id INTEGER PRIMARY KEY ,
+    version INTEGER,
+    document_Id     INTEGER                 COMMENT 'Идентификатор документа из справочника',
+    doc_Number       VARCHAR(10)             COMMENT 'Номер документа',
+    doc_Date         DATE                    COMMENT 'Дата выдачи документа'
+
+);
+
+CREATE INDEX IX_UserDocument_UserId ON UserDocument(user_id);
+ALTER TABLE UserDocument
+    ADD FOREIGN KEY (user_id) REFERENCES User (id);
+
 
 
 CREATE TABLE IF NOT EXISTS Document
@@ -62,19 +81,13 @@ CREATE TABLE IF NOT EXISTS Country
     UNIQUE (citizenship_Code, citizenship_Name)
 );
 
-CREATE INDEX IX_Organization_Id ON Office (org_Id);
-ALTER TABLE Office
-    ADD FOREIGN KEY (org_Id) REFERENCES Organization (id);
 
-CREATE INDEX IX_Office_Id ON User (office_Id);
-ALTER TABLE User
-    ADD FOREIGN KEY (office_Id) REFERENCES Office (id);
-
-CREATE INDEX IX_Document_Number ON User (doc_Number);
-ALTER TABLE User
+CREATE INDEX IX_Document_Id ON UserDocument(document_Id);
+ALTER TABLE UserDocument
     ADD FOREIGN KEY (document_Id) REFERENCES Document (id);
 
-CREATE INDEX IX_citizenshipCode ON User (citizenship_Id);
+
+CREATE INDEX IX_citizenshipId ON User (citizenship_Id);
 ALTER TABLE User
     ADD FOREIGN KEY (citizenship_Id) REFERENCES Country (id);
 
