@@ -47,7 +47,7 @@ CREATE INDEX IX_Office_Id ON User (office_Id);
 ALTER TABLE User
     ADD FOREIGN KEY (office_Id) REFERENCES Office (id);
 
-CREATE TABLE IF NOT EXISTS UserDocument
+CREATE TABLE IF NOT EXISTS User_Document
 (
     user_id INTEGER PRIMARY KEY ,
     version INTEGER,
@@ -57,8 +57,8 @@ CREATE TABLE IF NOT EXISTS UserDocument
 
 );
 
-CREATE INDEX IX_UserDocument_UserId ON UserDocument(user_id);
-ALTER TABLE UserDocument
+CREATE INDEX IX_User_Document_UserId ON User_Document(user_id);
+ALTER TABLE User_Document
     ADD FOREIGN KEY (user_id) REFERENCES User (id);
 
 
@@ -82,8 +82,8 @@ CREATE TABLE IF NOT EXISTS Country
 );
 
 
-CREATE INDEX IX_Document_Id ON UserDocument(document_Id);
-ALTER TABLE UserDocument
+CREATE INDEX IX_Document_Id ON User_Document(document_Id);
+ALTER TABLE User_Document
     ADD FOREIGN KEY (document_Id) REFERENCES Document (id);
 
 
