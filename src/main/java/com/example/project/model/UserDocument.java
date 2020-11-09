@@ -31,4 +31,15 @@ public class UserDocument {
     @JoinColumn(name = "User_Id")
     private User user;
 
+    public Integer getDocumentId() {
+        return documentId;
+    }
+
+    public String getDocNumber() {
+        return docNumber;
+    }
+
+    public Date getDocDate() {
+        return docDate;
+    }
 }

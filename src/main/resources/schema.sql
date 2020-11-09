@@ -57,10 +57,8 @@ CREATE TABLE IF NOT EXISTS User_Document
 
 );
 
-CREATE INDEX IX_User_Document_UserId ON User_Document(user_id);
 ALTER TABLE User_Document
     ADD FOREIGN KEY (user_id) REFERENCES User (id);
-
 
 
 CREATE TABLE IF NOT EXISTS Document

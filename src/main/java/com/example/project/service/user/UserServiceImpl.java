@@ -23,7 +23,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserView getById(Long id) {
         User user = dao.getById(id);
-        UserView view = mapperFacade.map(user.getUserDocument(), UserView.class);
+        UserView view = mapperFacade.map(user, UserView.class);
+        view.documentId = user.getUserDocument().getDocumentId();
+        view.docNumber = user.getUserDocument().getDocNumber();
+        view.docDate = user.getUserDocument().getDocDate();
         return view;
     }
 }
