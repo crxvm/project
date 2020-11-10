@@ -3,6 +3,7 @@ package com.example.project.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity(name = "Document")
@@ -14,6 +15,10 @@ public class Document {
 
     @Version
     private Integer version;
+
+    public String getDocName() {
+        return docName;
+    }
 
     @Column(name = "doc_Code")
     private String docCode;

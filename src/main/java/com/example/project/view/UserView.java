@@ -11,8 +11,8 @@ public class UserView {
     public String position;
     public String phone;
     public Boolean isIdentified;
-    public Integer citizenshipId;
-    public Integer documentId;
+    public String citizenshipName;
+    public String docName;
     public String docNumber;
     public Date docDate;
 

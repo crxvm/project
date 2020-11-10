@@ -17,9 +17,6 @@ public class UserDocument {
     @Version
     private Integer version = 0;
 
-    @Column(name = "document_Id")
-    private Integer documentId;
-
     @Column(name = "doc_Number")
     private String docNumber;
 
@@ -31,12 +28,17 @@ public class UserDocument {
     @JoinColumn(name = "User_Id")
     private User user;
 
-    public Integer getDocumentId() {
-        return documentId;
-    }
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "document_Id")
+    private Document document;
+
 
     public String getDocNumber() {
         return docNumber;
+    }
+
+    public Document getDocument() {
+        return document;
     }
 
     public Date getDocDate() {
