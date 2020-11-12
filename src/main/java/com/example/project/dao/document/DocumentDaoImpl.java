@@ -23,4 +23,12 @@ public class DocumentDaoImpl implements DocumentDao {
         return query.getResultList();
     }
 
+    @Override
+    public Document getByCode(String code) {
+        TypedQuery<Document> query = em.createQuery
+                ("SELECT d FROM Document d where d.docCode = :code", Document.class);
+        query.setParameter("code", code);
+        return query.getSingleResult();
+    }
+
 }

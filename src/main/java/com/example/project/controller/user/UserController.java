@@ -1,12 +1,10 @@
 package com.example.project.controller.user;
 
 import com.example.project.service.user.UserService;
+import com.example.project.view.UserSaveView;
 import com.example.project.view.UserView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "api/user")
@@ -23,4 +21,8 @@ public class UserController {
         return userService.getById(id);
     }
 
+    @PostMapping("/save")
+    public void save(@RequestBody UserSaveView userSaveView){
+        userService.save(userSaveView);
+    }
 }

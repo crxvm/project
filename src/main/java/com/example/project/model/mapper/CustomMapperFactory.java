@@ -1,6 +1,7 @@
 package com.example.project.model.mapper;
 
 import com.example.project.model.User;
+import com.example.project.view.UserSaveView;
 import com.example.project.view.UserView;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -24,6 +25,13 @@ public class CustomMapperFactory implements FactoryBean<MapperFactory> {
                 .field("userDocument.docNumber", "docNumber")
                 .field("userDocument.docDate", "docDate")
                 .field("country.citizenshipName", "citizenshipName")
+                .register();
+        mapperFactory.classMap(UserSaveView.class, User.class)
+                .byDefault()
+                .field("document", "userDocument.document")
+                .field("docNumber", "userDocument.docNumber")
+                .field("docDate", "userDocument.docDate")
+                .field("docName", "userDocument.document.docName")
                 .register();
         return mapperFactory;
     }

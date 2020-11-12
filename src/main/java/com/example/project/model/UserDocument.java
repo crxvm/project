@@ -32,16 +32,4 @@ public class UserDocument {
     @JoinColumn(name = "document_Id")
     private Document document;
 
-
-    public String getDocNumber() {
-        return docNumber;
-    }
-
-    public Document getDocument() {
-        return document;
-    }
-
-    public Date getDocDate() {
-        return docDate;
-    }
 }

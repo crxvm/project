@@ -21,4 +21,12 @@ public class CountryDaoImpl implements CountryDao {
         TypedQuery<Country> all = em.createQuery("SELECT c FROM Country c", Country.class);
         return all.getResultList();
     }
+
+    @Override
+    public Country getByCode(String code) {
+        TypedQuery<Country> query = em.createQuery
+                ("SELECT c from Country c where c.citizenshipCode = :code", Country.class   );
+        query.setParameter("code", code);
+        return query.getSingleResult();
+    }
 }
