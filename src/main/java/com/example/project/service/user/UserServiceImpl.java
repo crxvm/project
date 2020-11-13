@@ -7,7 +7,9 @@ import com.example.project.model.Document;
 import com.example.project.model.User;
 import com.example.project.model.UserDocument;
 import com.example.project.model.mapper.MapperFacade;
+import com.example.project.view.UserListView;
 import com.example.project.view.UserSaveView;
+import com.example.project.view.UserUpdateView;
 import com.example.project.view.UserView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,5 +45,23 @@ public class UserServiceImpl implements UserService {
         view.country = countryDao.getByCode(view.citizenshipCode);
         UserDocument userDocument = mapperFacade.map(view, UserDocument.class);
         userDao.save(mapperFacade.map(view, User.class), userDocument);
+    }
+
+    @Override
+    @Transactional
+    public void update(UserUpdateView view) {
+        view.document = documentDao.getByName(view.docName);
+        view.country = countryDao.getByCode(view.citizenshipCode);
+        view.userId = view.id;
+        UserDocument userDocument = mapperFacade.map(view, UserDocument.class);
+        userDao.update(mapperFacade.map(view, User.class), userDocument);
+    }
+
+    @Override
+    @Transactional
+    public UserListView list(UserSaveView userView) {
+        User user = userDao.list(userView.officeId, userView.firstName, userView.secondName, userView.middleName, userView.position,
+                userView.docCode, userView.citizenshipCode);
+        return mapperFacade.map(user, UserListView.class);
     }
 }

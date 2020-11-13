@@ -7,4 +7,6 @@ import com.example.project.model.UserDocument;
 public interface UserDao {
     User getById(Long id);
     void save(User user, UserDocument userDocument);
+    void update(User user, UserDocument userDocument);
+    User list(Integer officeId, String fName, String lName, String mName, String position,  String docCode, String citizenshipCode);
 }

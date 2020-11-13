@@ -40,10 +40,6 @@ public class User {
         return id;
     }
 
-    public void setUserDocument(UserDocument userDocument) {
-        this.userDocument = userDocument;
-    }
-
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY ,cascade = CascadeType.ALL) //выбрать нужный
     @PrimaryKeyJoinColumn
     private UserDocument userDocument;

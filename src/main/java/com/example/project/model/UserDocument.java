@@ -25,11 +25,8 @@ public class UserDocument {
     private String docNumber;
 
     @Column(name = "doc_Date")
-    private Date docDate;
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+    private Date docDate;
 
     @OneToOne
     @MapsId

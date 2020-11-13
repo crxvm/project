@@ -31,4 +31,12 @@ public class DocumentDaoImpl implements DocumentDao {
         return query.getSingleResult();
     }
 
+    @Override
+    public Document getByName(String docName) {
+        TypedQuery<Document> query = em.createQuery
+                ("SELECT d FROM Document  d where d.docName = :docName", Document.class);
+        query.setParameter("docName", docName);
+        return query.getSingleResult();
+    }
+
 }
