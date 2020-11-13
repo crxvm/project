@@ -30,7 +30,7 @@ INSERT INTO Document (version, doc_Code, doc_Name) VALUES (0, 1, 'Passport');
 
 INSERT INTO Document (version, doc_Code, doc_Name) VALUES (0, 2, 'Driver License');
 
-INSERT INTO userdocument(user_id, version, document_Id, doc_Number, doc_Date) VALUES
+INSERT INTO user_document(user_id, version, document_Id, doc_Number, doc_Date) VALUES
 (1, 0, 1, 123, null);
 
 

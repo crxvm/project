@@ -36,8 +36,12 @@ public class User {
     @Column(name = "is_Identified")
     private Boolean isIdentified;
 
-    public UserDocument getUserDocument() {
-        return userDocument;
+    public Long getId() {
+        return id;
+    }
+
+    public void setUserDocument(UserDocument userDocument) {
+        this.userDocument = userDocument;
     }
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY ,cascade = CascadeType.ALL) //выбрать нужный

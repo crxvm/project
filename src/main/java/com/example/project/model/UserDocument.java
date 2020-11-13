@@ -14,6 +14,10 @@ public class UserDocument {
     @Column(name = "user_Id")
     private Long userId;
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Version
     private Integer version = 0;
 
@@ -22,6 +26,10 @@ public class UserDocument {
 
     @Column(name = "doc_Date")
     private Date docDate;
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     @OneToOne
     @MapsId

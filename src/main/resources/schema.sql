@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS User
     middle_Name      VARCHAR(15)             COMMENT 'Отчество',
     position        VARCHAR(50)             COMMENT 'Должность',
     phone           VARCHAR(15)             COMMENT 'Телефонный номер',
-    is_Active        BOOLEAN                 COMMENT 'Статуc',
     citizenship_Id  INTEGER                 COMMENT 'Идентификатор страны',
     is_Identified    BOOLEAN                 COMMENT 'Статус'
 );

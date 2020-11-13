@@ -26,13 +26,6 @@ public class CustomMapperFactory implements FactoryBean<MapperFactory> {
                 .field("userDocument.docDate", "docDate")
                 .field("country.citizenshipName", "citizenshipName")
                 .register();
-        mapperFactory.classMap(UserSaveView.class, User.class)
-                .byDefault()
-                .field("document", "userDocument.document")
-                .field("docNumber", "userDocument.docNumber")
-                .field("docDate", "userDocument.docDate")
-                .field("docName", "userDocument.document.docName")
-                .register();
         return mapperFactory;
     }
 

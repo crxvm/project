@@ -5,6 +5,7 @@ import com.example.project.dao.document.DocumentDao;
 import com.example.project.dao.user.UserDao;
 import com.example.project.model.Document;
 import com.example.project.model.User;
+import com.example.project.model.UserDocument;
 import com.example.project.model.mapper.MapperFacade;
 import com.example.project.view.UserSaveView;
 import com.example.project.view.UserView;
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
     public void save(UserSaveView view) {
         view.document = documentDao.getByCode(view.docCode);
         view.country = countryDao.getByCode(view.citizenshipCode);
-        userDao.save(mapperFacade.map(view, User.class));
+        UserDocument userDocument = mapperFacade.map(view, UserDocument.class);
+        userDao.save(mapperFacade.map(view, User.class), userDocument);
     }
 }

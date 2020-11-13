@@ -1,6 +1,7 @@
 package com.example.project.dao.user;
 
 import com.example.project.model.User;
+import com.example.project.model.UserDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -29,7 +30,9 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public void save(User user) {
+    public void save(User user, UserDocument userDocument) {
         em.persist(user);
+        userDocument.setUser(user);
+        em.persist(userDocument);
     }
 }
