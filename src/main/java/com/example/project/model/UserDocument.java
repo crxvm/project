@@ -14,18 +14,14 @@ public class UserDocument {
     @Column(name = "user_Id")
     private Long userId;
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     @Version
     private Integer version = 0;
 
     @Column(name = "doc_Number")
     private String docNumber;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "doc_Date")
-
     private Date docDate;
 
     @OneToOne
@@ -37,4 +33,7 @@ public class UserDocument {
     @JoinColumn(name = "document_Id")
     private Document document;
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

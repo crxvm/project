@@ -36,10 +36,6 @@ public class User {
     @Column(name = "is_Identified")
     private Boolean isIdentified;
 
-    public Long getId() {
-        return id;
-    }
-
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY ,cascade = CascadeType.ALL) //выбрать нужный
     @PrimaryKeyJoinColumn
     private UserDocument userDocument;
@@ -48,4 +44,7 @@ public class User {
     @JoinColumn(name = "citizenship_Id")
     private Country country;
 
+    public Long getId() {
+        return id;
+    }
 }

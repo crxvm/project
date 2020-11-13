@@ -30,6 +30,17 @@ INSERT INTO Document (version, doc_Code, doc_Name) VALUES (0, 1, 'Passport');
 
 INSERT INTO Document (version, doc_Code, doc_Name) VALUES (0, 2, 'Driver License');
 
+INSERT INTO country (version, citizenship_Code, citizenship_Name) VALUES
+(0, '643', 'Российская Федерация');
+INSERT INTO country (version, citizenship_Code, citizenship_Name) VALUES
+(0, '826', 'Великобритания');
+INSERT INTO country (version, citizenship_Code, citizenship_Name) VALUES
+(0, '764', 'Тайланд');
+INSERT INTO country (version, citizenship_Code, citizenship_Name) VALUES
+(0, '860', 'Узбекистан');
+INSERT INTO country (version, citizenship_Code, citizenship_Name) VALUES
+(0, '392', 'Япония');
+
 INSERT INTO user_document(user_id, version, document_Id, doc_Number, doc_Date) VALUES
 (1, 0, 1, 123, null);
 
