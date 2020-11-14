@@ -9,5 +9,5 @@ public interface OrganizationDao {
     void save(Organization organization);
     Organization getOrganizationById(Long id);
     void update (Organization organization);
-    Organization list (String name, String inn, Boolean isActive);
+    List<Organization> list (String name, String inn, Boolean isActive);
 }

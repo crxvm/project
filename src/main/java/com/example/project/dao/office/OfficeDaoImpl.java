@@ -6,7 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class OfficeDaoImpl implements OfficeDao {
@@ -34,22 +40,29 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     @Override
-    public Office list(Integer orgId, String name, String phone, Boolean isActive) {
-        Query q = em.createQuery(
-                "SELECT o FROM Office o WHERE o.orgId = :orgId " +
-                        "and (o.name is null or o.name LIKE CONCAT('%',:name ,'%')) " +
-                        "and (o.phone is null or o.phone LIKE CONCAT('%',:phone ,'%'))" +
-                        "and o.isActive = :isActive");
-        if(name == "") {
-            name = "%";
+    public List<Office> list(Integer orgId, String name, String phone, Boolean isActive) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Office> criteria = cb.createQuery(Office.class);
+        Root<Office> office = criteria.from(Office.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+        Predicate predicate1 =cb.equal(office.get("orgId"), orgId);
+        Predicate predicate2 =cb.like(office.get("name"), name);
+        Predicate predicate3 =cb.like(office.get("phone"), phone);
+        Predicate predicate4 =cb.equal(office.get("isActive"), isActive);
+
+        predicates.add(predicate1);
+        if(name != null) {
+            predicates.add(predicate2);
         }
-        if(phone == "") {
-            phone = "%";
+        if(phone != null) {
+            predicates.add(predicate3);
         }
-        q.setParameter("orgId" ,orgId);
-        q.setParameter("name", name);
-        q.setParameter("phone", phone);
-        q.setParameter("isActive", isActive);
-        return (Office) q.getResultList().get(0);
+        if(isActive != null) {
+            predicates.add(predicate4);
+        }
+
+        TypedQuery<Office> query = em.createQuery(criteria.where(predicates.toArray(new Predicate[predicates.size()])));
+        return query.getResultList();
     }
 }

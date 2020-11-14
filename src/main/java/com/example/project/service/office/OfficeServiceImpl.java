@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class OfficeServiceImpl implements OfficeService{
     private final OfficeDao dao;
@@ -41,8 +43,8 @@ public class OfficeServiceImpl implements OfficeService{
 
     @Override
     @Transactional
-    public OfficeListView list(Integer orgId, String name, String phone, Boolean isActive) {
-        Office office = dao.list(orgId, name, phone, isActive);
-        return mapperFacade.map(office, OfficeListView.class);
+    public List<OfficeListView> list(Integer orgId, String name, String phone, Boolean isActive) {
+        List<Office> office = dao.list(orgId, name, phone, isActive);
+        return mapperFacade.mapAsList(office, OfficeListView.class);
     }
 }

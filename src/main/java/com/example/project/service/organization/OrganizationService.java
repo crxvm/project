@@ -9,5 +9,5 @@ public interface OrganizationService {
     OrganizationFullView getById(Long id);
     void save(OrganizationFullView organizationFullView);
     void update(OrganizationFullView organizationFullView);
-    OrganizationListView list(String name, String inn, Boolean is_Active);
+    List<OrganizationListView> list(String name, String inn, Boolean is_Active);
 }

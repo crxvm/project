@@ -8,6 +8,8 @@ import com.example.project.view.UserView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "api/user")
 public class UserController {
@@ -34,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/list")
-    public UserListView list(@RequestBody UserSaveView userSaveView) {
+    public List<UserListView> list(@RequestBody UserSaveView userSaveView) {
         return userService.list(userSaveView);
     }
 

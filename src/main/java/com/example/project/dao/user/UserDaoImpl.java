@@ -8,10 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao{
@@ -32,7 +31,7 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public User list(Integer officeId, String fName, String lName, String mName, String position, String docCode, String citizenshipCode) {
+    public List<User> list(Integer officeId, String fName, String lName, String mName, String position, String docCode, String citizenshipCode) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<User> criteria = cb.createQuery(User.class);
         Root<User> user = criteria.from(User.class);
@@ -40,13 +39,38 @@ public class UserDaoImpl implements UserDao{
         Join userDocument = user.join("userDocument");
         Join document = userDocument.join("document");
 
-        TypedQuery<User> query = em.createQuery
-                (criteria.where(cb.and(cb.equal(user.get("officeId"), officeId), cb.like(user.get("firstName"), fName),
-                        cb.like(user.get("secondName"), lName)), cb.like(user.get("middleName"), mName),
-                        cb.like(user.get("position"), position), cb.like(country.get("citizenshipCode"), citizenshipCode),
-                        cb.like(document.get("docCode"), docCode)
-                ));
-        return query.getSingleResult();
+        List<Predicate> list = new ArrayList<>();
+        Predicate predicate1 = cb.equal(user.get("officeId"), officeId);
+        Predicate predicate2 = cb.like(user.get("firstName"), fName);
+        Predicate predicate3 = cb.like(user.get("secondName"), lName);
+        Predicate predicate4 = cb.like(user.get("middleName"), mName);
+        Predicate predicate5 = cb.like(user.get("position"), position);
+        Predicate predicate6 = cb.like(country.get("citizenshipCode"), citizenshipCode);
+        Predicate predicate7 = cb.like(document.get("docCode"), docCode);
+
+        list.add(predicate1);
+        if(fName != null) {
+            list.add(predicate2);
+        }
+        if(lName != null) {
+            list.add(predicate3);
+        }
+        if(mName != null) {
+            list.add(predicate4);
+        }
+        if(position != null) {
+            list.add(predicate5);
+        }
+        if(citizenshipCode != null) {
+            list.add(predicate6);
+        }
+        if(docCode != null) {
+            list.add(predicate7);
+        }
+
+        TypedQuery<User> query = em.createQuery(criteria.where(list.toArray(new Predicate[list.size()])));
+
+        return query.getResultList();
     }
 
     @Override

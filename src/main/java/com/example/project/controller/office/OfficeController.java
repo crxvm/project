@@ -7,6 +7,8 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Api(value = "OfficeController")
 @RestController
 @RequestMapping(value = "/api/office")
@@ -18,7 +20,7 @@ public class OfficeController {
         this.officeService = officeService;
     }
     @PostMapping(value = "/list")
-    public OfficeListView list(@RequestBody OfficeFullView officeFullView) {
+    public List<OfficeListView> list(@RequestBody OfficeFullView officeFullView) {
         return officeService.list(officeFullView.orgId, officeFullView.name,
                 officeFullView.phone, officeFullView.isActive);
     }

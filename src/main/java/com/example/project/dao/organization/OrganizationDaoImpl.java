@@ -1,15 +1,17 @@
 package com.example.project.dao.organization;
 
 import com.example.project.model.Organization;
-import org.aspectj.weaver.ast.Or;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -37,17 +39,25 @@ public class OrganizationDaoImpl implements OrganizationDao {
     }
 
     @Override
-    public Organization list(String name, String inn, Boolean isActive) {
-        Query q = em.createQuery("Select O from Organization O where O.name =:name " +
-                "and  O.inn LIKE CONCAT('%',:inn ,'%')" +
-                "and o.isActive = :isActive");
+    public List<Organization> list(String name, String inn, Boolean isActive) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Organization> criteria = cb.createQuery(Organization.class);
+        Root<Organization> organization = criteria.from(Organization.class);
 
-        if(inn == null || inn == "") {
-            inn = "%";
+        List<Predicate> predicates = new ArrayList<>();
+        Predicate predicate1 = cb.like(organization.get("name"), name);
+        Predicate predicate2 = cb.like(organization.get("inn"), inn);
+        Predicate predicate3 = cb.equal(organization.get("isActive"), isActive);
+
+        predicates.add(predicate1);
+        if(inn != null) {
+            predicates.add(predicate2);
         }
-        q.setParameter("inn", inn);
-        q.setParameter("name", name);
-        q.setParameter("isActive", isActive);
-        return (Organization) q.getResultList().get(0);
+        if(isActive != null) {
+            predicates.add(predicate3);
+        }
+
+        TypedQuery<Organization> query = em.createQuery(criteria.where(predicates.toArray(new Predicate[predicates.size()])));
+        return query.getResultList();
     }
 }

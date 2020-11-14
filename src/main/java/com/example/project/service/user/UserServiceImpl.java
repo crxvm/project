@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
@@ -59,9 +61,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserListView list(UserSaveView userView) {
-        User user = userDao.list(userView.officeId, userView.firstName, userView.secondName, userView.middleName, userView.position,
+    public List<UserListView> list(UserSaveView userView) {
+        List<User> users = userDao.list(userView.officeId, userView.firstName, userView.secondName, userView.middleName, userView.position,
                 userView.docCode, userView.citizenshipCode);
-        return mapperFacade.map(user, UserListView.class);
+        return mapperFacade.mapAsList(users, UserListView.class);
     }
 }
