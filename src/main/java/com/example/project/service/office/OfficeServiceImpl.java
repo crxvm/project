@@ -4,7 +4,7 @@ import com.example.project.dao.office.OfficeDao;
 import com.example.project.model.Office;
 import com.example.project.model.mapper.MapperFacade;
 import com.example.project.view.OfficeFullView;
-import com.example.project.view.OfficeListView;
+import com.example.project.view.OfficeListOutView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,8 +43,8 @@ public class OfficeServiceImpl implements OfficeService{
 
     @Override
     @Transactional
-    public List<OfficeListView> list(Integer orgId, String name, String phone, Boolean isActive) {
+    public List<OfficeListOutView> list(Integer orgId, String name, String phone, Boolean isActive) {
         List<Office> office = dao.list(orgId, name, phone, isActive);
-        return mapperFacade.mapAsList(office, OfficeListView.class);
+        return mapperFacade.mapAsList(office, OfficeListOutView.class);
     }
 }

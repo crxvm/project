@@ -1,4 +1,4 @@
-package com.example.project.view;
+package com.example.project.view.user;
 
 import java.util.Date;
 

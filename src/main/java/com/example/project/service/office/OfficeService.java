@@ -1,7 +1,7 @@
 package com.example.project.service.office;
 
 import com.example.project.view.OfficeFullView;
-import com.example.project.view.OfficeListView;
+import com.example.project.view.OfficeListOutView;
 
 import java.util.List;
 
@@ -9,5 +9,5 @@ public interface OfficeService {
     OfficeFullView getById(Long id);
     void update(OfficeFullView officeFullView);
     void save(OfficeFullView officeFullView);
-    List<OfficeListView> list(Integer orgId, String name, String phone, Boolean isActive);
+    List<OfficeListOutView> list(Integer orgId, String name, String phone, Boolean isActive);
 }

@@ -2,7 +2,7 @@ package com.example.project.controller.office;
 
 import com.example.project.service.office.OfficeService;
 import com.example.project.view.OfficeFullView;
-import com.example.project.view.OfficeListView;
+import com.example.project.view.OfficeListOutView;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ public class OfficeController {
         this.officeService = officeService;
     }
     @PostMapping(value = "/list")
-    public List<OfficeListView> list(@RequestBody OfficeFullView officeFullView) {
+    public List<OfficeListOutView> list(@RequestBody OfficeFullView officeFullView) {
         return officeService.list(officeFullView.orgId, officeFullView.name,
                 officeFullView.phone, officeFullView.isActive);
     }

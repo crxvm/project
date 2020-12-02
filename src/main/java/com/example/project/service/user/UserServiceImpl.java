@@ -8,10 +8,7 @@ import com.example.project.model.Document;
 import com.example.project.model.User;
 import com.example.project.model.UserDocument;
 import com.example.project.model.mapper.MapperFacade;
-import com.example.project.view.UserListView;
-import com.example.project.view.UserSaveView;
-import com.example.project.view.UserUpdateView;
-import com.example.project.view.UserView;
+import com.example.project.view.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,9 +65,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<UserListView> list(UserSaveView userView) {
-        List<User> users = userDao.list(userView.officeId, userView.firstName, userView.secondName, userView.middleName, userView.position,
-                userView.docCode, userView.citizenshipCode);
-        return mapperFacade.mapAsList(users, UserListView.class);
+    public List<UserListOutView> list(UserListInView userListInView) {
+        List<User> users = userDao.list(userListInView.officeId, userListInView.firstName, userListInView.secondName, userListInView.middleName, userListInView.position,
+                userListInView.docCode, userListInView.citizenshipCode);
+        return mapperFacade.mapAsList(users, UserListOutView.class);
     }
 }

@@ -2,8 +2,6 @@ package com.example.project.dao.user;
 
 import com.example.project.model.User;
 import com.example.project.model.UserDocument;
-import com.example.project.model.mapper.MapperFacade;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,12 +15,10 @@ import java.util.List;
 public class UserDaoImpl implements UserDao{
 
     private final EntityManager em;
-    private final MapperFacade mapperFacade;
 
     @Autowired
-    public UserDaoImpl(EntityManager em, MapperFacade mapperFacade) {
+    public UserDaoImpl(EntityManager em) {
         this.em = em;
-        this.mapperFacade = mapperFacade;
     }
 
     @Override
@@ -34,11 +30,11 @@ public class UserDaoImpl implements UserDao{
         return query.getSingleResult();
     }
 
-    public UserDocument getUdById(Long id) {
+    public UserDocument getUserDocumentById(Long id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<UserDocument> criteria = cb.createQuery(UserDocument.class);
         Root<UserDocument> userDocument = criteria.from(UserDocument.class);
-        TypedQuery<UserDocument> query = em.createQuery(criteria.where(cb.equal(userDocument.get("id"), id)));
+        TypedQuery<UserDocument> query = em.createQuery(criteria.where(cb.equal(userDocument.get("userId"), id)));
         return query.getSingleResult();
     }
 
@@ -87,8 +83,9 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public void update(User user, UserDocument userDocument) {
-        UserDocument uD = getUdById(userDocument.getUserId());
+        UserDocument uD = getUserDocumentById(userDocument.getUserId());
         User u = getById(user.getId());
+
         u.setVersion(u.getVersion() + 1);
         u.setCountry(user.getCountry());
         u.setFirstName(user.getFirstName());
@@ -98,6 +95,7 @@ public class UserDaoImpl implements UserDao{
         u.setPhone(user.getPhone());
         u.setIdentified(user.getIdentified());
         u.setPosition(user.getPosition());
+
         uD.setDocument(userDocument.getDocument());
         uD.setDocDate(userDocument.getDocDate());
         uD.setDocNumber(userDocument.getDocNumber());

@@ -1,10 +1,7 @@
 package com.example.project.controller.user;
 
 import com.example.project.service.user.UserService;
-import com.example.project.view.UserListView;
-import com.example.project.view.UserSaveView;
-import com.example.project.view.UserUpdateView;
-import com.example.project.view.UserView;
+import com.example.project.view.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,8 +33,8 @@ public class UserController {
     }
 
     @PostMapping("/list")
-    public List<UserListView> list(@RequestBody UserSaveView userSaveView) {
-        return userService.list(userSaveView);
+    public List<UserListOutView> list(@RequestBody UserListInView userListInView) {
+        return userService.list(userListInView);
     }
 
 

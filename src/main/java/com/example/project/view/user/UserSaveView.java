@@ -1,8 +1,4 @@
-package com.example.project.view;
-
-import com.example.project.model.Country;
-import com.example.project.model.Document;
-import com.example.project.model.UserDocument;
+package com.example.project.view.user;
 
 import java.util.Date;
 

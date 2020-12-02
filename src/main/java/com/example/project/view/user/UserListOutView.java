@@ -1,6 +1,6 @@
-package com.example.project.view;
+package com.example.project.view.user;
 
-public class UserListView {
+public class UserListOutView {
     public Long id;
     public String firstName;
     public String secondName;
