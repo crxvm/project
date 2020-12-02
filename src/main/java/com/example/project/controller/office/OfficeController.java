@@ -1,8 +1,7 @@
 package com.example.project.controller.office;
 
 import com.example.project.service.office.OfficeService;
-import com.example.project.view.OfficeFullView;
-import com.example.project.view.OfficeListOutView;
+import com.example.project.view.office.*;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,23 +19,22 @@ public class OfficeController {
         this.officeService = officeService;
     }
     @PostMapping(value = "/list")
-    public List<OfficeListOutView> list(@RequestBody OfficeFullView officeFullView) {
-        return officeService.list(officeFullView.orgId, officeFullView.name,
-                officeFullView.phone, officeFullView.isActive);
+    public List<OfficeListOutView> list(@RequestBody OfficeListInView officeListInView) {
+        return officeService.list(officeListInView);
     }
 
     @GetMapping(value ="/{id}" )
-    public OfficeFullView getById(@PathVariable("id") Long id) {
+    public OfficeView getById(@PathVariable("id") Long id) {
         return officeService.getById(id);
     }
 
     @PostMapping(value = "/save")
-    public void save(@RequestBody OfficeFullView officeFullView) {
-        officeService.save(officeFullView);
+    public void save(@RequestBody OfficeSaveView officeSaveView) {
+        officeService.save(officeSaveView);
     }
 
     @PostMapping(value = "/update")
-    public void update(@RequestBody OfficeFullView officeFullView) {
-        officeService.update(officeFullView);
+    public void update(@RequestBody OfficeUpdateView officeUpdateView) {
+        officeService.update(officeUpdateView);
     }
 }

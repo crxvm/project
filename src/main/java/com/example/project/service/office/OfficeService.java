@@ -1,13 +1,12 @@
 package com.example.project.service.office;
 
-import com.example.project.view.OfficeFullView;
-import com.example.project.view.OfficeListOutView;
+import com.example.project.view.office.*;
 
 import java.util.List;
 
 public interface OfficeService {
-    OfficeFullView getById(Long id);
-    void update(OfficeFullView officeFullView);
-    void save(OfficeFullView officeFullView);
-    List<OfficeListOutView> list(Integer orgId, String name, String phone, Boolean isActive);
+    OfficeView getById(Long id);
+    void update(OfficeUpdateView officeUpdateView);
+    void save(OfficeSaveView officeSaveView);
+    List<OfficeListOutView> list(OfficeListInView officeListInView);
 }

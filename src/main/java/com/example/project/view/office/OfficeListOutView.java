@@ -1,7 +1,7 @@
-package com.example.project.view;
+package com.example.project.view.office;
 
 public class OfficeListOutView {
-    public Long id;
+    public Integer id;
     public String name;
     public Boolean isActive;
 }

@@ -86,7 +86,6 @@ public class UserDaoImpl implements UserDao{
         UserDocument uD = getUserDocumentById(userDocument.getUserId());
         User u = getById(user.getId());
 
-        u.setVersion(u.getVersion() + 1);
         u.setCountry(user.getCountry());
         u.setFirstName(user.getFirstName());
         u.setMiddleName(user.getMiddleName());
@@ -99,7 +98,6 @@ public class UserDaoImpl implements UserDao{
         uD.setDocument(userDocument.getDocument());
         uD.setDocDate(userDocument.getDocDate());
         uD.setDocNumber(userDocument.getDocNumber());
-        uD.setVersion(userDocument.getVersion() + 1);
     }
 
 
