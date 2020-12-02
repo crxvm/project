@@ -2,6 +2,7 @@ package com.example.project.dao.user;
 
 import com.example.project.model.User;
 import com.example.project.model.UserDocument;
+import com.example.project.model.mapper.MapperFacade;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,18 +16,29 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao{
 
+    private final EntityManager em;
+    private final MapperFacade mapperFacade;
+
     @Autowired
-    public UserDaoImpl(EntityManager em) {
+    public UserDaoImpl(EntityManager em, MapperFacade mapperFacade) {
         this.em = em;
+        this.mapperFacade = mapperFacade;
     }
 
-    private final EntityManager em;
     @Override
 
     public User getById(Long id) { CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<User> criteria = cb.createQuery(User.class);
         Root<User> user = criteria.from(User.class);
         TypedQuery<User> query = em.createQuery(criteria.where(cb.equal(user.get("id"), id)));
+        return query.getSingleResult();
+    }
+
+    public UserDocument getUdById(Long id) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<UserDocument> criteria = cb.createQuery(UserDocument.class);
+        Root<UserDocument> userDocument = criteria.from(UserDocument.class);
+        TypedQuery<UserDocument> query = em.createQuery(criteria.where(cb.equal(userDocument.get("id"), id)));
         return query.getSingleResult();
     }
 
@@ -75,10 +87,24 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public void update(User user, UserDocument userDocument) {
-        Session session = em.unwrap(Session.class);
-        session.update(user);
-        session.update(userDocument);
+        UserDocument uD = getUdById(userDocument.getUserId());
+        User u = getById(user.getId());
+        u.setVersion(u.getVersion() + 1);
+        u.setCountry(user.getCountry());
+        u.setFirstName(user.getFirstName());
+        u.setMiddleName(user.getMiddleName());
+        u.setSecondName(user.getSecondName());
+        u.setOfficeId(user.getOfficeId());
+        u.setPhone(user.getPhone());
+        u.setIdentified(user.getIdentified());
+        u.setPosition(user.getPosition());
+        uD.setDocument(userDocument.getDocument());
+        uD.setDocDate(userDocument.getDocDate());
+        uD.setDocNumber(userDocument.getDocNumber());
+        uD.setVersion(userDocument.getVersion() + 1);
     }
+
+
 
     @Override
     public void save(User user, UserDocument userDocument) {

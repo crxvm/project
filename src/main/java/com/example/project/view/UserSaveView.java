@@ -13,16 +13,11 @@ public class UserSaveView {
     public String middleName;
     public String position;
     public String phone;
-
-    public String docCode;// переделать бд document
-    public String docName;//
-    public String docNumber;//
-    public Date docDate;//
-
-    public String citizenshipCode; //
+    public String docCode;
+    public String docName;
+    public String docNumber;
+    public Date docDate;
+    public String citizenshipCode;
     public Boolean isIdentified;
 
-    public Country country;
-    public UserDocument userDocument;
-    public Document document;
 }
