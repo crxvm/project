@@ -3,8 +3,7 @@ package com.example.project.service.office;
 import com.example.project.dao.office.OfficeDao;
 import com.example.project.model.Office;
 import com.example.project.model.mapper.MapperFacade;
-import com.example.project.view.OfficeFullView;
-import com.example.project.view.OfficeListView;
+import com.example.project.view.office.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,27 +23,27 @@ public class OfficeServiceImpl implements OfficeService{
 
     @Override
     @Transactional
-    public OfficeFullView getById(Long id) {
+    public OfficeView getById(Long id) {
         Office office = dao.getById(id);
-        return mapperFacade.map(office, OfficeFullView.class);
+        return mapperFacade.map(office, OfficeView.class);
     }
 
     @Override
     @Transactional
-    public void update(OfficeFullView officeFullView) {
-        dao.update(mapperFacade.map(officeFullView, Office.class));
+    public void update(OfficeUpdateView officeUpdateView) {
+        dao.update(mapperFacade.map(officeUpdateView, Office.class));
     }
 
     @Override
     @Transactional
-    public void save(OfficeFullView officeFullView) {
-        dao.save(mapperFacade.map(officeFullView, Office.class));
+    public void save(OfficeSaveView officeSaveView) {
+        dao.save(mapperFacade.map(officeSaveView, Office.class));
     }
 
     @Override
     @Transactional
-    public List<OfficeListView> list(Integer orgId, String name, String phone, Boolean isActive) {
-        List<Office> office = dao.list(orgId, name, phone, isActive);
-        return mapperFacade.mapAsList(office, OfficeListView.class);
+    public List<OfficeListOutView> list(OfficeListInView officeListInView) {
+        List<Office> office = dao.list(officeListInView.orgId, officeListInView.name,officeListInView.phone,officeListInView.isActive);
+        return mapperFacade.mapAsList(office, OfficeListOutView.class);
     }
 }

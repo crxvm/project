@@ -1,8 +1,10 @@
 package com.example.project.model.mapper;
 
+import com.example.project.model.Office;
+import com.example.project.model.Organization;
 import com.example.project.model.User;
-import com.example.project.view.UserSaveView;
-import com.example.project.view.UserView;
+import com.example.project.model.UserDocument;
+import com.example.project.view.user.UserView;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.beans.factory.FactoryBean;

@@ -1,7 +1,6 @@
 package com.example.project.dao.office;
 
 import com.example.project.model.Office;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -30,8 +29,11 @@ public class OfficeDaoImpl implements OfficeDao {
 
     @Override
     public void update(Office office) {
-        Session session = em.unwrap(Session.class);
-        session.update(office);
+        Office office1 = getById(office.getId());
+        office1.setAddress(office.getAddress());
+        office1.setName(office.getName());
+        office1.setPhone(office.getPhone());
+        office1.setActive(office.getActive());
     }
 
     @Override

@@ -3,14 +3,12 @@ package com.example.project.service.user;
 import com.example.project.dao.country.CountryDao;
 import com.example.project.dao.document.DocumentDao;
 import com.example.project.dao.user.UserDao;
+import com.example.project.model.Country;
 import com.example.project.model.Document;
 import com.example.project.model.User;
 import com.example.project.model.UserDocument;
 import com.example.project.model.mapper.MapperFacade;
-import com.example.project.view.UserListView;
-import com.example.project.view.UserSaveView;
-import com.example.project.view.UserUpdateView;
-import com.example.project.view.UserView;
+import com.example.project.view.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,27 +41,33 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void save(UserSaveView view) {
-        view.document = documentDao.getByCode(view.docCode);
-        view.country = countryDao.getByCode(view.citizenshipCode);
+        Document document = documentDao.getByCode(view.docCode);
+        Country country = countryDao.getByCode(view.citizenshipCode);
         UserDocument userDocument = mapperFacade.map(view, UserDocument.class);
-        userDao.save(mapperFacade.map(view, User.class), userDocument);
+        userDocument.setDocument(document);
+        User user = mapperFacade.map(view, User.class);
+        user.setCountry(country);
+        userDao.save(user, userDocument);
     }
 
     @Override
     @Transactional
     public void update(UserUpdateView view) {
-        view.document = documentDao.getByName(view.docName);
-        view.country = countryDao.getByCode(view.citizenshipCode);
-        view.userId = view.id;
+        Document document = documentDao.getByName(view.docName);
+        Country country = countryDao.getByCode(view.citizenshipCode);
         UserDocument userDocument = mapperFacade.map(view, UserDocument.class);
-        userDao.update(mapperFacade.map(view, User.class), userDocument);
+        userDocument.setDocument(document);
+        userDocument.setUserId(view.id);
+        User user = mapperFacade.map(view, User.class);
+        user.setCountry(country);
+        userDao.update(user, userDocument);
     }
 
     @Override
     @Transactional
-    public List<UserListView> list(UserSaveView userView) {
-        List<User> users = userDao.list(userView.officeId, userView.firstName, userView.secondName, userView.middleName, userView.position,
-                userView.docCode, userView.citizenshipCode);
-        return mapperFacade.mapAsList(users, UserListView.class);
+    public List<UserListOutView> list(UserListInView userListInView) {
+        List<User> users = userDao.list(userListInView.officeId, userListInView.firstName, userListInView.secondName, userListInView.middleName, userListInView.position,
+                userListInView.docCode, userListInView.citizenshipCode);
+        return mapperFacade.mapAsList(users, UserListOutView.class);
     }
 }

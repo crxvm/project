@@ -1,19 +1,19 @@
-package com.example.project.view;
+package com.example.project.view.user;
 
 import java.util.Date;
 
-public class UserView {
-    public Long id;
-    public String firstName;
+public class UserSaveView {
     public Integer officeId;
+    public String firstName;
     public String secondName;
     public String middleName;
     public String position;
     public String phone;
-    public Boolean isIdentified;
-    public String citizenshipName;
+    public String docCode;
     public String docName;
     public String docNumber;
     public Date docDate;
+    public String citizenshipCode;
+    public Boolean isIdentified;
 
 }

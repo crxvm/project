@@ -1,8 +1,7 @@
-package com.example.project.view;
+package com.example.project.view.office;
 
-public class OfficeFullView {
+public class OfficeView {
     public Long id;
-    public Integer orgId;
     public String name;
     public String address;
     public String phone;
