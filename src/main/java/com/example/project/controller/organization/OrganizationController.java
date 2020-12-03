@@ -1,14 +1,19 @@
 package com.example.project.controller.organization;
 
 import com.example.project.service.organization.OrganizationService;
-import com.example.project.view.OrganizationFullView;
-import com.example.project.view.OrganizationListView;
+import com.example.project.view.organization.OrganizationListInView;
+import com.example.project.view.organization.OrganizationSaveView;
+import com.example.project.view.organization.OrganizationView;
+import com.example.project.view.organization.OrganizationListOutView;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(value = "OrganizationController", description = "Информация об организациях")
@@ -17,38 +22,32 @@ import java.util.List;
 public class OrganizationController {
 
     private final OrganizationService organizationService;
+    private final Validator validator;
+
     @Autowired
-    public OrganizationController(OrganizationService organizationService) {
+    public OrganizationController(OrganizationService organizationService, @Qualifier("mvcValidator") Validator validator) {
+        this.validator = validator;
         this.organizationService = organizationService;
+
     }
     @GetMapping("/{id}")
-    public OrganizationFullView getById(@PathVariable("id") Long id){
+    public OrganizationView getById(@PathVariable("id") Long id){
         return organizationService.getById(id);
     }
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = String.class),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")})
+
     @PostMapping("/save")
-    public void save(@RequestBody OrganizationFullView organizationFullView) {
-        organizationService.save(organizationFullView);
+    public void save( @RequestBody OrganizationSaveView view, BindingResult bindingResult
+    ) {
+        organizationService.save(view);
     }
 
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = String.class),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")})
     @PostMapping("/update")
-    public void update(@RequestBody OrganizationFullView organizationFullView) {
-        organizationService.update(organizationFullView);
+    public void update(@RequestBody OrganizationView organizationView) {
+        organizationService.update(organizationView);
     }
 
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success", response = String.class),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")})
     @PostMapping("/list")
-    public List<OrganizationListView> list(@RequestBody OrganizationFullView organizationFullView) {
-        return organizationService.list(organizationFullView.name, organizationFullView.inn, organizationFullView.isActive);
+    public List<OrganizationListOutView> list(@RequestBody OrganizationListInView view) {
+        return organizationService.list(view);//view.name, view.inn, view.isActive);
     }
 }

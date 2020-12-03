@@ -3,9 +3,10 @@ package com.example.project.service.organization;
 import com.example.project.dao.organization.OrganizationDao;
 import com.example.project.model.Organization;
 import com.example.project.model.mapper.MapperFacade;
-import com.example.project.view.OrganizationFullView;
-import com.example.project.view.OrganizationListView;
-import org.hibernate.loader.plan.exec.internal.OneToManyLoadQueryDetails;
+import com.example.project.view.organization.OrganizationListInView;
+import com.example.project.view.organization.OrganizationSaveView;
+import com.example.project.view.organization.OrganizationView;
+import com.example.project.view.organization.OrganizationListOutView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,28 +27,27 @@ public class OrganizationServiceImpl implements OrganizationService{
 
     @Transactional(readOnly = true)
     @Override
-    public OrganizationFullView getById(Long id) {
+    public OrganizationView getById(Long id) {
         Organization organization = dao.getOrganizationById(id);
-        return mapperFacade.map(organization, OrganizationFullView.class);
+        return mapperFacade.map(organization, OrganizationView.class);
     }
 
     @Transactional
     @Override
-    public List<OrganizationListView> list(String name, String inn, Boolean isActive) {
-        List<Organization> organizations = dao.list(name, inn, isActive);
-        return mapperFacade.mapAsList(organizations, OrganizationListView.class);
+    public List<OrganizationListOutView> list(OrganizationListInView view) {
+        List<Organization> organizations = dao.list(view.name, view.inn, view.isActive);
+        return mapperFacade.mapAsList(organizations, OrganizationListOutView.class);
     }
 
     @Transactional
     @Override
-    public void save(OrganizationFullView organizationFullView) {
-        dao.save(mapperFacade.map(organizationFullView, Organization.class));
+    public void save(OrganizationSaveView organizationSaveView) {
+        dao.save(mapperFacade.map(organizationSaveView, Organization.class));
     }
-
 
     @Override
     @Transactional
-    public void update(OrganizationFullView organizationFullView) {
-        dao.update(mapperFacade.map(organizationFullView, Organization.class));
+    public void update(OrganizationView organizationView) {
+        dao.update(mapperFacade.map(organizationView, Organization.class));
     }
     }
