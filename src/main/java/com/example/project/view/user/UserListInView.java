@@ -1,6 +1,9 @@
 package com.example.project.view.user;
 
+import javax.validation.constraints.NotNull;
+
 public class UserListInView {
+    @NotNull
     public Integer officeId;
     public String firstName;
     public String secondName;

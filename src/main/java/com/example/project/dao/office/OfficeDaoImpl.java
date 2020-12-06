@@ -48,20 +48,17 @@ public class OfficeDaoImpl implements OfficeDao {
         Root<Office> office = criteria.from(Office.class);
 
         List<Predicate> predicates = new ArrayList<>();
-        Predicate predicate1 =cb.equal(office.get("orgId"), orgId);
-        Predicate predicate2 =cb.like(office.get("name"), name);
-        Predicate predicate3 =cb.like(office.get("phone"), phone);
-        Predicate predicate4 =cb.equal(office.get("isActive"), isActive);
 
-        predicates.add(predicate1);
+        predicates.add(cb.equal(office.get("orgId"), orgId));
+
         if(name != null) {
-            predicates.add(predicate2);
+            predicates.add(cb.like(office.get("name"), name));
         }
         if(phone != null) {
-            predicates.add(predicate3);
+            predicates.add(cb.like(office.get("phone"), phone));
         }
         if(isActive != null) {
-            predicates.add(predicate4);
+            predicates.add(cb.equal(office.get("isActive"), isActive));
         }
 
         TypedQuery<Office> query = em.createQuery(criteria.where(predicates.toArray(new Predicate[predicates.size()])));

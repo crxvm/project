@@ -23,20 +23,9 @@ public class UserDaoImpl implements UserDao{
 
     @Override
 
-    public User getById(Long id) { CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<User> criteria = cb.createQuery(User.class);
-        Root<User> user = criteria.from(User.class);
-        TypedQuery<User> query = em.createQuery(criteria.where(cb.equal(user.get("id"), id)));
-        return query.getSingleResult();
+    public User getById(Long id) { return em.find(User.class, id);
     }
 
-    public UserDocument getUserDocumentById(Long id) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<UserDocument> criteria = cb.createQuery(UserDocument.class);
-        Root<UserDocument> userDocument = criteria.from(UserDocument.class);
-        TypedQuery<UserDocument> query = em.createQuery(criteria.where(cb.equal(userDocument.get("userId"), id)));
-        return query.getSingleResult();
-    }
 
     @Override
     public List<User> list(Integer officeId, String fName, String lName, String mName, String position, String docCode, String citizenshipCode) {
@@ -48,32 +37,25 @@ public class UserDaoImpl implements UserDao{
         Join document = userDocument.join("document");
 
         List<Predicate> list = new ArrayList<>();
-        Predicate predicate1 = cb.equal(user.get("officeId"), officeId);
-        Predicate predicate2 = cb.like(user.get("firstName"), fName);
-        Predicate predicate3 = cb.like(user.get("secondName"), lName);
-        Predicate predicate4 = cb.like(user.get("middleName"), mName);
-        Predicate predicate5 = cb.like(user.get("position"), position);
-        Predicate predicate6 = cb.like(country.get("citizenshipCode"), citizenshipCode);
-        Predicate predicate7 = cb.like(document.get("docCode"), docCode);
 
-        list.add(predicate1);
+        list.add(cb.equal(user.get("officeId"), officeId));
         if(fName != null) {
-            list.add(predicate2);
+            list.add(cb.like(user.get("firstName"), fName));
         }
         if(lName != null) {
-            list.add(predicate3);
+            list.add(cb.like(user.get("secondName"), lName));
         }
         if(mName != null) {
-            list.add(predicate4);
+            list.add(cb.like(user.get("middleName"), mName));
         }
         if(position != null) {
-            list.add(predicate5);
+            list.add(cb.like(user.get("position"), position));
         }
         if(citizenshipCode != null) {
-            list.add(predicate6);
+            list.add(cb.like(country.get("citizenshipCode"), citizenshipCode));
         }
         if(docCode != null) {
-            list.add(predicate7);
+            list.add(cb.like(document.get("docCode"), docCode));
         }
 
         TypedQuery<User> query = em.createQuery(criteria.where(list.toArray(new Predicate[list.size()])));
@@ -83,7 +65,7 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public void update(User user, UserDocument userDocument) {
-        UserDocument uD = getUserDocumentById(userDocument.getUserId());
+        UserDocument uD = user.getUserDocument();
         User u = getById(user.getId());
 
         u.setCountry(user.getCountry());
@@ -99,8 +81,6 @@ public class UserDaoImpl implements UserDao{
         uD.setDocDate(userDocument.getDocDate());
         uD.setDocNumber(userDocument.getDocNumber());
     }
-
-
 
     @Override
     public void save(User user, UserDocument userDocument) {

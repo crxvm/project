@@ -45,16 +45,13 @@ public class OrganizationDaoImpl implements OrganizationDao {
         Root<Organization> organization = criteria.from(Organization.class);
 
         List<Predicate> predicates = new ArrayList<>();
-        Predicate predicate1 = cb.like(organization.get("name"), name);
-        Predicate predicate2 = cb.like(organization.get("inn"), inn);
-        Predicate predicate3 = cb.equal(organization.get("isActive"), isActive);
 
-        predicates.add(predicate1);
+        predicates.add(cb.like(organization.get("name"), name));
         if(inn != null) {
-            predicates.add(predicate2);
+            predicates.add(cb.like(organization.get("inn"), inn));
         }
         if(isActive != null) {
-            predicates.add(predicate3);
+            predicates.add(cb.equal(organization.get("isActive"), isActive));
         }
 
         TypedQuery<Organization> query = em.createQuery(criteria.where(predicates.toArray(new Predicate[predicates.size()])));

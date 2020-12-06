@@ -1,6 +1,7 @@
 package com.example.project.controller.organization;
 
 import com.example.project.service.organization.OrganizationService;
+import com.example.project.view.ResultView;
 import com.example.project.view.organization.OrganizationListInView;
 import com.example.project.view.organization.OrganizationSaveView;
 import com.example.project.view.organization.OrganizationView;
@@ -8,11 +9,8 @@ import com.example.project.view.organization.OrganizationListOutView;
 import io.swagger.annotations.Api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -22,11 +20,9 @@ import java.util.List;
 public class OrganizationController {
 
     private final OrganizationService organizationService;
-    private final Validator validator;
 
     @Autowired
-    public OrganizationController(OrganizationService organizationService, @Qualifier("mvcValidator") Validator validator) {
-        this.validator = validator;
+    public OrganizationController(OrganizationService organizationService) {
         this.organizationService = organizationService;
 
     }
@@ -36,18 +32,23 @@ public class OrganizationController {
     }
 
     @PostMapping("/save")
-    public void save( @RequestBody OrganizationSaveView view, BindingResult bindingResult
+    @ResponseBody
+    public ResultView save(@Valid @RequestBody OrganizationSaveView view, BindingResult bindingResult
     ) {
         organizationService.save(view);
+        return new ResultView();
     }
 
     @PostMapping("/update")
-    public void update(@RequestBody OrganizationView organizationView) {
+    @ResponseBody
+    public ResultView update(@Valid @RequestBody OrganizationView organizationView) {
         organizationService.update(organizationView);
+        return new ResultView();
     }
 
     @PostMapping("/list")
-    public List<OrganizationListOutView> list(@RequestBody OrganizationListInView view) {
-        return organizationService.list(view);//view.name, view.inn, view.isActive);
+    @ResponseBody
+    public List<OrganizationListOutView> list(@Valid @RequestBody OrganizationListInView view) {
+        return organizationService.list(view);
     }
 }

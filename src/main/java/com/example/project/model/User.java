@@ -36,7 +36,7 @@ public class User {
     @Column(name = "is_Identified")
     private Boolean isIdentified;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY ,cascade = CascadeType.ALL) //выбрать нужный
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER ,cascade = CascadeType.ALL) //выбрать нужный
     @PrimaryKeyJoinColumn
     private UserDocument userDocument;
 

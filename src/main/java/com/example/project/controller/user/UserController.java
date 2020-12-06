@@ -1,10 +1,12 @@
 package com.example.project.controller.user;
 
 import com.example.project.service.user.UserService;
+import com.example.project.view.ResultView;
 import com.example.project.view.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,17 +25,22 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public void save(@RequestBody UserSaveView userSaveView){
+    @ResponseBody
+    public ResultView save(@Valid @RequestBody UserSaveView userSaveView){
         userService.save(userSaveView);
+        return new ResultView();
     }
 
     @PostMapping("/update")
-    public void update(@RequestBody UserUpdateView userUpdateView){
+    @ResponseBody
+    public ResultView update(@Valid @RequestBody UserUpdateView userUpdateView){
         userService.update(userUpdateView);
+        return new ResultView();
     }
 
     @PostMapping("/list")
-    public List<UserListOutView> list(@RequestBody UserListInView userListInView) {
+    @ResponseBody
+    public List<UserListOutView> list(@Valid @RequestBody UserListInView userListInView) {
         return userService.list(userListInView);
     }
 
