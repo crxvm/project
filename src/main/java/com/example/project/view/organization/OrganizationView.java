@@ -1,10 +1,7 @@
 package com.example.project.view.organization;
 
-import io.swagger.annotations.ApiModel;
-
 import javax.validation.constraints.NotNull;
 
-@ApiModel(description = "Организация")
 public class OrganizationView {
     @NotNull
     public Long id;

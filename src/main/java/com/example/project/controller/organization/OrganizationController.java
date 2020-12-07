@@ -37,7 +37,7 @@ public class OrganizationController {
 
     @PostMapping("/save")
     @ResponseBody
-    public ResultView save(@Valid @RequestBody OrganizationSaveView view, BindingResult bindingResult
+    public ResultView save(@Valid @RequestBody OrganizationSaveView view
     ) {
         organizationService.save(view);
         return new ResultView();

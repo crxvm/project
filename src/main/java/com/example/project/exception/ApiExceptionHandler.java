@@ -11,34 +11,34 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.persistence.NoResultException;
 import java.util.UUID;
 
+/**
+ * Created on 07.12.2020
+ */
+
 @ControllerAdvice
 public class ApiExceptionHandler {
     Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
-    HttpStatus httpStatus;
 
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleApiRequestException(Exception e) {
-        if(MethodArgumentNotValidException.class.isInstance(e)) {
-            httpStatus = HttpStatus.BAD_REQUEST;
+        if(e instanceof MethodArgumentNotValidException) {
             ErrorResponse errorResponse = new ErrorResponse(
                     "required fields are not filled");
 
             logger.error(e.getMessage(), e);
 
-            return new ResponseEntity<>(errorResponse, httpStatus);
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
-        else if(NoResultException.class.isInstance(e)) {
-            httpStatus = HttpStatus.NOT_FOUND;
+        else if(e instanceof NoResultException) {
             ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
             logger.error(e.getMessage(), e);
-            return new ResponseEntity<>(errorResponse, httpStatus);
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
         else  {
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             UUID uuid = UUID.randomUUID();
             ErrorResponse errorResponse = new ErrorResponse("Internal server error. UUID:" + uuid.toString());
             logger.error(e.getMessage() + "UUID: " + uuid.toString(), e);
-            return new ResponseEntity<>(errorResponse, httpStatus);
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
