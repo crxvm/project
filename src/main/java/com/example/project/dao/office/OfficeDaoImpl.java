@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,6 +31,9 @@ public class OfficeDaoImpl implements OfficeDao {
     @Override
     public void update(Office office) {
         Office office1 = getById(office.getId());
+        if (office1 == null) {
+            throw new NoResultException("cannot find office with id: " + office.getId());
+        }
         office1.setAddress(office.getAddress());
         office1.setName(office.getName());
         office1.setPhone(office.getPhone());

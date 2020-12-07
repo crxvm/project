@@ -6,15 +6,15 @@ import com.example.project.view.organization.OrganizationListInView;
 import com.example.project.view.organization.OrganizationSaveView;
 import com.example.project.view.organization.OrganizationView;
 import com.example.project.view.organization.OrganizationListOutView;
-import io.swagger.annotations.Api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.NoResultException;
 import javax.validation.Valid;
 import java.util.List;
 
-@Api(value = "OrganizationController", description = "Информация об организациях")
 @RestController
 @RequestMapping(value = "/api/organization")
 public class OrganizationController {
@@ -28,7 +28,11 @@ public class OrganizationController {
     }
     @GetMapping("/{id}")
     public OrganizationView getById(@PathVariable("id") Long id){
-        return organizationService.getById(id);
+        OrganizationView organizationView  = organizationService.getById(id);
+        if (organizationView == null) {
+            throw new NoResultException("cannot find organization with id = " + id.toString());
+        }
+        return organizationView;
     }
 
     @PostMapping("/save")

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
@@ -65,8 +66,11 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public void update(User user, UserDocument userDocument) {
-        UserDocument uD = user.getUserDocument();
         User u = getById(user.getId());
+        if(u == null) {
+            throw new NoResultException("cannot find user with id: " + user.getId());
+        }
+        UserDocument uD = u.getUserDocument();
 
         u.setCountry(user.getCountry());
         u.setFirstName(user.getFirstName());

@@ -1,11 +1,11 @@
 package com.example.project.dao.organization;
 
 import com.example.project.model.Organization;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -34,8 +34,17 @@ public class OrganizationDaoImpl implements OrganizationDao {
 
     @Override
     public void update(Organization organization) {
-        Session session = em.unwrap(Session.class);
-        session.update(organization);
+        Organization organization1 = getOrganizationById(organization.getId());
+        if( organization1 == null) {
+            throw new NoResultException("cannot find organization with id: " + organization.getId());
+        }
+        organization1.setAddress(organization.getAddress());
+        organization1.setFullName(organization.getFullName());
+        organization1.setInn(organization.getInn());
+        organization1.setKpp(organization.getKpp());
+        organization1.setName(organization.getName());
+        organization1.setPhone(organization.getPhone());
+        organization1.setActive(organization.getActive());
     }
 
     @Override

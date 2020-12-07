@@ -6,6 +6,7 @@ import com.example.project.view.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.NoResultException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -21,7 +22,11 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UserView getById(@PathVariable("id") Long id) {
-        return userService.getById(id);
+        UserView userView = userService.getById(id);
+        if(userView == null) {
+            throw new NoResultException("cannot find user with id: " + id);
+        }
+        return userView;
     }
 
     @PostMapping("/save")
@@ -43,6 +48,5 @@ public class UserController {
     public List<UserListOutView> list(@Valid @RequestBody UserListInView userListInView) {
         return userService.list(userListInView);
     }
-
 
 }

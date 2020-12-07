@@ -6,6 +6,8 @@ import com.example.project.view.office.*;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.NoResultException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -20,18 +22,24 @@ public class OfficeController {
     public OfficeController(OfficeService officeService) {
         this.officeService = officeService;
     }
+    @ResponseBody
     @PostMapping(value = "/list")
-    public List<OfficeListOutView> list(@RequestBody OfficeListInView officeListInView) {
+    public List<OfficeListOutView> list(@Valid @RequestBody OfficeListInView officeListInView) {
         return officeService.list(officeListInView);
     }
 
     @GetMapping(value ="/{id}" )
     public OfficeView getById(@PathVariable("id") Long id) {
-        return officeService.getById(id);
+        OfficeView officeView = officeService.getById(id);
+        if (officeView == null) {
+            throw new NoResultException("cannot find office with id = " + id);
+        }
+        return officeView;
     }
 
     @PostMapping(value = "/save")
-    public ResultView save(@RequestBody OfficeSaveView officeSaveView) {
+    @ResponseBody
+    public ResultView save(@Valid @RequestBody OfficeSaveView officeSaveView) {
         officeService.save(officeSaveView);
         return new ResultView();
     }
