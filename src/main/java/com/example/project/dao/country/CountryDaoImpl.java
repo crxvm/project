@@ -8,6 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
+/**
+ * {inheritDoc}
+ */
 @Repository
 public class CountryDaoImpl implements CountryDao {
     private final EntityManager em;
@@ -16,12 +19,18 @@ public class CountryDaoImpl implements CountryDao {
         this.em = em;
     }
 
+    /**
+     * {inheritDoc}
+     */
     @Override
     public List<Country> all() {
         TypedQuery<Country> all = em.createQuery("SELECT c FROM Country c", Country.class);
         return all.getResultList();
     }
 
+    /**
+     * {inheritDoc}
+     */
     @Override
     public Country getByCode(String code) {
         TypedQuery<Country> query = em.createQuery

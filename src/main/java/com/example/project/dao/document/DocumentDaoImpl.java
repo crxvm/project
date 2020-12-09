@@ -8,6 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
+/**
+ * {@inheritDoc}
+ */
 @Repository
 public class DocumentDaoImpl implements DocumentDao {
     private final EntityManager em;
@@ -17,12 +20,18 @@ public class DocumentDaoImpl implements DocumentDao {
         this.em = em;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Document> all() {
         TypedQuery<Document> query = em.createQuery("SELECT d FROM Document d", Document.class);
         return query.getResultList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Document getByCode(String code) {
         TypedQuery<Document> query = em.createQuery
@@ -31,6 +40,9 @@ public class DocumentDaoImpl implements DocumentDao {
         return query.getSingleResult();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Document getByName(String docName) {
         TypedQuery<Document> query = em.createQuery

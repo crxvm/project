@@ -14,6 +14,9 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * {@inheritDoc}
+ */
 @Repository
 public class OfficeDaoImpl implements OfficeDao {
     private final EntityManager em;
@@ -23,11 +26,17 @@ public class OfficeDaoImpl implements OfficeDao {
         this.em = em;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void save(Office office) {
         em.persist(office);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update(Office office) {
         Office office1 = getById(office.getId());
@@ -40,11 +49,17 @@ public class OfficeDaoImpl implements OfficeDao {
         office1.setActive(office.getActive());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office getById(Long id) {
         return em.find(Office.class, id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Office> list(Integer orgId, String name, String phone, Boolean isActive) {
         CriteriaBuilder cb = em.getCriteriaBuilder();

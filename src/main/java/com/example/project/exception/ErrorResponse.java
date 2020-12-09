@@ -1,5 +1,8 @@
 package com.example.project.exception;
 
+/**
+ * Отображение при возникновении ошибок
+ */
 public class ErrorResponse {
     private final String error;
 

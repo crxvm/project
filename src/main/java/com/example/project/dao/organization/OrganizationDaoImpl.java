@@ -14,24 +14,37 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * {@inheritDoc}
+ */
 @Repository
 public class OrganizationDaoImpl implements OrganizationDao {
     private final EntityManager em;
+
     @Autowired
     public OrganizationDaoImpl(EntityManager em) {
         this.em = em;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void save(Organization organization) {
         em.persist(organization);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Organization getOrganizationById(Long id) {
         return em.find(Organization.class, id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update(Organization organization) {
         Organization organization1 = getOrganizationById(organization.getId());
@@ -47,6 +60,9 @@ public class OrganizationDaoImpl implements OrganizationDao {
         organization1.setActive(organization.getActive());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Organization> list(String name, String inn, Boolean isActive) {
         CriteriaBuilder cb = em.getCriteriaBuilder();

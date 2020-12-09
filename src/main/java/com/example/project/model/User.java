@@ -4,42 +4,78 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * Сущность пользователя
+ */
 @Entity(name = "User")
 @Data
 public class User {
+    /**
+     * Уникальный идентефикатор
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    /**
+     * Поле версии hibernate
+     */
     @Version
     private Integer version = 0;
 
+    /**
+     * Имя
+     */
     @Column(name = "first_Name")
     private String firstName;
 
+    /**
+     * Идентефикатор офиса
+     */
     @Column(name = "office_Id")
     private Integer officeId;
 
+    /**
+     * Фамилия
+     */
     @Column(name = "second_Name")
     private String secondName;
 
+    /**
+     * Отчество
+     */
     @Column(name = "middle_Name")
     private String middleName;
 
+    /**
+     * Должность
+     */
     @Column(name = "position")
     private String position;
 
+    /**
+     * Телефон
+     */
     @Column(name = "phone")
     private String phone;
 
+    /**
+     * Статус идентефикации
+     */
     @Column(name = "is_Identified")
     private Boolean isIdentified;
 
+    /**
+     * Join столбец для связи с сущностью документов пользователя
+     */
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER ,cascade = CascadeType.ALL) //выбрать нужный
     @PrimaryKeyJoinColumn
     private UserDocument userDocument;
 
+    /**
+     * Join столбец для свзяи с сущностью стран
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "citizenship_Id")
     private Country country;

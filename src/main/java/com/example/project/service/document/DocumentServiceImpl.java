@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * {@inheritDoc}
+ */
 @Service
 public class DocumentServiceImpl implements DocumentService {
     private final DocumentDao dao;
@@ -20,6 +23,9 @@ public class DocumentServiceImpl implements DocumentService {
         this.dao = dao;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public List<DocumentView> documents() {

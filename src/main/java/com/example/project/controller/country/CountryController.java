@@ -11,6 +11,9 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * Контроллер для справочника стран
+ */
 @RestController
 @RequestMapping(value = "/api/countries", produces = APPLICATION_JSON_VALUE)
 public class CountryController {
@@ -21,9 +24,9 @@ public class CountryController {
         this.countryService = countryService;
     }
     /**
-     * returns all counties from catalog
+     * Возвращает все страны из справочника
      *
-     * @return Object List {@link CountryView}
+     * @return список объектов {@link CountryView}
      */
     @GetMapping(value = "/")
     private List<CountryView> countries() {

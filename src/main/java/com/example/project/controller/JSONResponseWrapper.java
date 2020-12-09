@@ -11,6 +11,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.util.List;
 
+/**
+ * ResponseBodyAdvise для обертки ответа в data
+ */
 @ControllerAdvice
 public class JSONResponseWrapper implements ResponseBodyAdvice<Object> {
 
@@ -19,6 +22,11 @@ public class JSONResponseWrapper implements ResponseBodyAdvice<Object> {
         return true;
     }
 
+    /**
+     *Перехватывает json и оборачивает его в data
+     * @param body ответ в формате json
+     * @return объект типа {@link WrapperObj}
+     */
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         if (body instanceof List) {

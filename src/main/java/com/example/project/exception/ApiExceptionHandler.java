@@ -19,6 +19,12 @@ import java.util.UUID;
 public class ApiExceptionHandler {
     Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
 
+    /**
+     * Обрабатывает исключения MethodArgumentNotValidException, NoResultException и остальные
+     * @param e исключение
+     * @return объект обертка с сообщением об ошибке
+     */
+
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleApiRequestException(Exception e) {
         if(e instanceof MethodArgumentNotValidException) {

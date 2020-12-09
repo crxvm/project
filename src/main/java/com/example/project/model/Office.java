@@ -5,30 +5,54 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * Сущность офис
+ */
 @Data
 @Entity(name = "Office")
 @NoArgsConstructor
 public class Office {
+    /**
+     * Уникальный идентефикатор
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    /**
+     * Поле версии hibernate
+     */
     @Version
     private Integer version = 0;
 
+    /**
+     * Идентефикатор организации
+     */
     @Column(name ="org_Id")
     private Integer orgId;
 
+    /**
+     * Название офиса
+     */
     @Column(name = "name")
     private String name;
 
+    /**
+     * Адрес офиса
+     */
     @Column(name = "address")
     private String address;
 
+    /**
+     * Телефон офиса
+     */
     @Column(name = "phone")
     private String phone;
 
+    /**
+     * Статус активности
+     */
     @Column(name = "is_Active")
     private Boolean isActive;
 

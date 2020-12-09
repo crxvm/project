@@ -4,40 +4,70 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * Сущность организации
+ */
 @Data
 @Entity(name = "Organization")
 public class Organization {
-    public Organization() {
-    }
-
+    /**
+     *
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    /**
+     * Поле версии hibernate
+     */
     @Version
     private Integer version = 0;
 
+    /**
+     * Название организации
+     */
     @Column(name="name", length = 50, nullable = false)
     private String name;
 
+    /**
+     * Полное название организации
+     */
     @Column(name="full_name", length = 50, nullable = false)
     private String fullName;
 
+    /**
+     * Индивидуальный номер налогоплательщика
+     */
     @Column(name = "inn", length = 25, nullable = false)
     private String inn;
 
+    /**
+     * Код причины постановки
+     */
     @Column(name = "kpp", length = 25, nullable = false)
     private String kpp;
 
+    /**
+     * Адрес организации
+     */
     @Column(name = "address", length = 25, nullable = false)
     private String address;
 
+    /**
+     * Телефон организации
+     */
     @Column(name = "phone", length = 15)
     private String phone;
 
+    /**
+     * Статус активности
+     */
     @Column(name = "is_Active")
     private Boolean isActive;
+
+    public Organization() {
+    }
 
     public Long getId() {
         return id;

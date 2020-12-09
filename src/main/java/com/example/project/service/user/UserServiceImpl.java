@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * {@inheritDoc}
+ */
 @Service
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
@@ -30,6 +33,9 @@ public class UserServiceImpl implements UserService {
         this.countryDao = countryDao;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public UserView getById(Long id) {
@@ -38,6 +44,9 @@ public class UserServiceImpl implements UserService {
         return view;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void save(UserSaveView view) {
@@ -50,6 +59,9 @@ public class UserServiceImpl implements UserService {
         userDao.save(user, userDocument);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void update(UserUpdateView view) {
@@ -63,6 +75,9 @@ public class UserServiceImpl implements UserService {
         userDao.update(user, userDocument);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public List<UserListOutView> list(UserListInView userListInView) {

@@ -12,6 +12,9 @@ import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * {@inheritDoc}
+ */
 @Repository
 public class UserDaoImpl implements UserDao{
 
@@ -24,10 +27,15 @@ public class UserDaoImpl implements UserDao{
 
     @Override
 
+    /**
+     * {@inheritDoc}
+     */
     public User getById(Long id) { return em.find(User.class, id);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<User> list(Integer officeId, String fName, String lName, String mName, String position, String docCode, String citizenshipCode) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -63,7 +71,9 @@ public class UserDaoImpl implements UserDao{
 
         return query.getResultList();
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void update(User user, UserDocument userDocument) {
         User u = getById(user.getId());
@@ -85,7 +95,9 @@ public class UserDaoImpl implements UserDao{
         uD.setDocDate(userDocument.getDocDate());
         uD.setDocNumber(userDocument.getDocNumber());
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void save(User user, UserDocument userDocument) {
         em.persist(user);

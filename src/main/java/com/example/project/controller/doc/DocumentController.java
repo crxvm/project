@@ -11,6 +11,9 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * Контроллер для справочника документов
+ */
 @RestController
 @RequestMapping(value = "/api/docs", produces = APPLICATION_JSON_VALUE)
 public class DocumentController {
@@ -21,6 +24,11 @@ public class DocumentController {
         this.documentService = documentService;
     }
 
+    /**
+     * Возвращает список документов из справочника
+     *
+     * @return список объекто {@link DocumentView}
+     */
     @GetMapping(value = "/")
     public List<DocumentView> documents(){
         return documentService.documents();

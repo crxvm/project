@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+/**
+ * {@inheritDoc}
+ */
 @Service
 public class CountryServiceImpl implements CountryService {
     private final CountryDao dao;
@@ -19,7 +23,9 @@ public class CountryServiceImpl implements CountryService {
         this.mapperFacade = mapperFacade;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public List<CountryView> countries() {
