@@ -3,7 +3,7 @@ package com.example.project.view.office;
 import javax.validation.constraints.NotNull;
 
 /**
- * Отображение для получения списка офисов по фильтрам
+ * Фильтр для поиска офисов
  */
 public class OfficeListInView {
     /**

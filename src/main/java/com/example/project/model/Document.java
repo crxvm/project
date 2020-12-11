@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity(name = "Document")
 public class Document {
     /**
-     * Уникальный идентефикатор
+     * Уникальный идентификатор
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

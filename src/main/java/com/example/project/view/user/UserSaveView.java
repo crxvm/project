@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class UserSaveView {
     /**
-     * Идентефикатор офиса
+     * идентификатор офиса
      */
     @NotNull
     public Integer officeId;

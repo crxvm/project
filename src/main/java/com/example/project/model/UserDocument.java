@@ -13,7 +13,7 @@ import java.util.Date;
 @Entity(name = "User_Document")
 public class UserDocument {
     /**
-     * Уникальный идентефикатор
+     * Уникальный идентификатор
      */
     @Id
     @Column(name = "user_Id")

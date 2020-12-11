@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
  */
 public class DocumentView {
     /**
-     * Уникальный идентефикатор
+     * Уникальный идентификатор
      */
     @NotNull
     public String id;

@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
- * {inheritDoc}
+ * {@inheritDoc}
  */
 @Repository
 public class CountryDaoImpl implements CountryDao {
@@ -20,7 +20,7 @@ public class CountryDaoImpl implements CountryDao {
     }
 
     /**
-     * {inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public List<Country> all() {
@@ -29,7 +29,7 @@ public class CountryDaoImpl implements CountryDao {
     }
 
     /**
-     * {inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public Country getByCode(String code) {

@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Data
 public class User {
     /**
-     * Уникальный идентефикатор
+     * Уникальный идентификатор
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class User {
     private String firstName;
 
     /**
-     * Идентефикатор офиса
+     * идентификатор офиса
      */
     @Column(name = "office_Id")
     private Integer officeId;

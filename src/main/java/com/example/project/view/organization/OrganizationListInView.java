@@ -3,7 +3,7 @@ package com.example.project.view.organization;
 import javax.validation.constraints.NotNull;
 
 /**
- * Отображение для передачи параметров организаций
+ * Фильтр для поиска организаций
  */
 public class OrganizationListInView {
     /**

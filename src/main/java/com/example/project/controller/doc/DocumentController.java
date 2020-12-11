@@ -29,7 +29,7 @@ public class DocumentController {
      *
      * @return список объекто {@link DocumentView}
      */
-    @GetMapping(value = "/")
+    @GetMapping
     public List<DocumentView> documents(){
         return documentService.documents();
     }

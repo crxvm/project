@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Office {
     /**
-     * Уникальный идентефикатор
+     * Уникальный идентификатор
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class Office {
     private Integer version = 0;
 
     /**
-     * Идентефикатор организации
+     * идентификатор организации
      */
     @Column(name ="org_Id")
     private Integer orgId;

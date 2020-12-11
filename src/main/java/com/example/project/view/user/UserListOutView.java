@@ -5,7 +5,7 @@ package com.example.project.view.user;
  */
 public class UserListOutView {
     /**
-     * Уникальный идентефикатор
+     * Уникальный идентификатор
      */
     public Long id;
 

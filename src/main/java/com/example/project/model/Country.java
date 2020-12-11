@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity(name = "Country")
 public class Country {
     /**
-     * Уникальный идентефикатор
+     * Уникальный идентификатор
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

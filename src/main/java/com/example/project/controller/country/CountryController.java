@@ -28,7 +28,7 @@ public class CountryController {
      *
      * @return список объектов {@link CountryView}
      */
-    @GetMapping(value = "/")
+    @GetMapping
     private List<CountryView> countries() {
         return countryService.countries();
     }

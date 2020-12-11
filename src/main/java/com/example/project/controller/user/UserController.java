@@ -26,7 +26,7 @@ public class UserController {
 
     /**
      * Возвращает пользователя по id
-     * @param id - уникальный идентефикатор
+     * @param id - уникальный идентификатор
      * @return объект для отображения данных пользователя {@link UserView}
      */
     @GetMapping("/{id}")

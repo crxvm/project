@@ -3,11 +3,11 @@ package com.example.project.view.user;
 import javax.validation.constraints.NotNull;
 
 /**
- * Отображение передачи параметров для полчения списка пользователей
+ * Фильтр для поиска пользователей по параметрам
  */
 public class UserListInView {
     /**
-     * Идентефикатор офиса
+     * идентификатор офиса
      */
     @NotNull
     public Integer officeId;

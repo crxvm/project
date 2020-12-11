@@ -29,7 +29,7 @@ public class OrganizationController {
 
     /**
      * Возвращает организацию по id
-     * @param id - уникальный идентефикатор
+     * @param id - уникальный идентификатор
      * @return объект для отображения данных организации {@link OrganizationView}
      */
     @GetMapping("/{id}")

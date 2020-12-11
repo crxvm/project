@@ -12,15 +12,15 @@ import javax.persistence.NoResultException;
 import java.util.UUID;
 
 /**
- * Created on 07.12.2020
+ * Перехватчик исключений для контроллеров
  */
-
 @ControllerAdvice
 public class ApiExceptionHandler {
     Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
 
     /**
-     * Обрабатывает исключения MethodArgumentNotValidException, NoResultException и остальные
+     * Обрабатывает исключения:
+     * {@link MethodArgumentNotValidException}, {@link NoResultException}, {@link Exception}
      * @param e исключение
      * @return объект обертка с сообщением об ошибке
      */
@@ -46,7 +46,5 @@ public class ApiExceptionHandler {
             logger.error(e.getMessage() + "UUID: " + uuid.toString(), e);
             return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
-
 }
