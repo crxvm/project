@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -34,8 +35,13 @@ public class CountryDaoImpl implements CountryDao {
     @Override
     public Country getByCode(String code) {
         TypedQuery<Country> query = em.createQuery
-                ("SELECT c from Country c where c.citizenshipCode = :code", Country.class   );
+                ("SELECT c from Country c where c.citizenshipCode = :code", Country.class);
         query.setParameter("code", code);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        }
+        catch (Exception e) {
+            throw new NoResultException("cannot find country with code: " + code);
+        }
     }
 }

@@ -2,17 +2,16 @@ package com.example.project.service.user;
 
 import com.example.project.dao.country.CountryDao;
 import com.example.project.dao.document.DocumentDao;
+import com.example.project.dao.office.OfficeDao;
 import com.example.project.dao.user.UserDao;
-import com.example.project.model.Country;
-import com.example.project.model.Document;
-import com.example.project.model.User;
-import com.example.project.model.UserDocument;
+import com.example.project.model.*;
 import com.example.project.model.mapper.MapperFacade;
 import com.example.project.view.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 /**
@@ -24,13 +23,15 @@ public class UserServiceImpl implements UserService {
     private final MapperFacade mapperFacade;
     private final DocumentDao documentDao;
     private final CountryDao countryDao;
+    private final OfficeDao officeDao;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, MapperFacade mapperFacade, DocumentDao documentDao, CountryDao countryDao) {
+    public UserServiceImpl(UserDao userDao, MapperFacade mapperFacade, DocumentDao documentDao, CountryDao countryDao, OfficeDao officeDao) {
         this.userDao = userDao;
         this.mapperFacade = mapperFacade;
         this.documentDao = documentDao;
         this.countryDao = countryDao;
+        this.officeDao = officeDao;
     }
 
     /**
@@ -40,8 +41,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserView getById(Long id) {
         User user = userDao.getById(id);
-        UserView view = mapperFacade.map(user, UserView.class);
-        return view;
+        return mapperFacade.map(user, UserView.class);
     }
 
     /**
@@ -56,6 +56,9 @@ public class UserServiceImpl implements UserService {
         userDocument.setDocument(document);
         User user = mapperFacade.map(view, User.class);
         user.setCountry(country);
+        if(officeDao.getById(view.officeId.longValue()) == null) {
+            throw new NoResultException("cannot find office with id:" + view.officeId);
+        }
         userDao.save(user, userDocument);
     }
 
@@ -72,6 +75,9 @@ public class UserServiceImpl implements UserService {
         userDocument.setUserId(view.id);
         User user = mapperFacade.map(view, User.class);
         user.setCountry(country);
+        if(officeDao.getById(view.officeId.longValue()) == null) {
+            throw new NoResultException("cannot find office with id:" + view.officeId);
+        }
         userDao.update(user, userDocument);
     }
 

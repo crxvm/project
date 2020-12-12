@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -37,7 +38,12 @@ public class DocumentDaoImpl implements DocumentDao {
         TypedQuery<Document> query = em.createQuery
                 ("SELECT d FROM Document d where d.docCode = :code", Document.class);
         query.setParameter("code", code);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        }
+        catch (Exception e) {
+            throw new NoResultException("cannot find document with code: " + code);
+        }
     }
 
     /**
@@ -48,7 +54,12 @@ public class DocumentDaoImpl implements DocumentDao {
         TypedQuery<Document> query = em.createQuery
                 ("SELECT d FROM Document  d where d.docName = :docName", Document.class);
         query.setParameter("docName", docName);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        }
+        catch (Exception e) {
+            throw new NoResultException("cannot find document with docName: " + docName);
+        }
     }
 
 }

@@ -1,13 +1,16 @@
 package com.example.project.service.office;
 
 import com.example.project.dao.office.OfficeDao;
+import com.example.project.dao.organization.OrganizationDao;
 import com.example.project.model.Office;
+import com.example.project.model.Organization;
 import com.example.project.model.mapper.MapperFacade;
 import com.example.project.view.office.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 /**
@@ -17,11 +20,12 @@ import java.util.List;
 public class OfficeServiceImpl implements OfficeService{
     private final OfficeDao dao;
     private final MapperFacade mapperFacade;
-
+    private final OrganizationDao organizationDao;
     @Autowired
-    public OfficeServiceImpl(OfficeDao dao, MapperFacade mapperFacade) {
+    public OfficeServiceImpl(OfficeDao dao, MapperFacade mapperFacade, OrganizationDao organizationDao) {
         this.dao = dao;
         this.mapperFacade = mapperFacade;
+        this.organizationDao = organizationDao;
     }
 
     /**
@@ -49,6 +53,9 @@ public class OfficeServiceImpl implements OfficeService{
     @Override
     @Transactional
     public void save(OfficeSaveView officeSaveView) {
+        if(organizationDao.getOrganizationById(officeSaveView.orgId) == null) {
+            throw new NoResultException("Cannot find organization with id: " + officeSaveView.orgId);
+        }
         dao.save(mapperFacade.map(officeSaveView, Office.class));
     }
 
