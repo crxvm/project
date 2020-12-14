@@ -50,17 +50,22 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void save(UserSaveView view) {
-        Document document = documentDao.getByCode(view.docCode);
-        Document checkDocName = documentDao.getByName(view.docName);
-        Country country = countryDao.getByCode(view.citizenshipCode);
-        UserDocument userDocument = mapperFacade.map(view, UserDocument.class);
-        userDocument.setDocument(document);
-        User user = mapperFacade.map(view, User.class);
-        user.setCountry(country);
-        if(officeDao.getById(view.officeId.longValue()) == null) {
-            throw new NoResultException("cannot find office with id:" + view.officeId);
+        try {
+            Document document = documentDao.getByCode(view.docCode);
+            Document checkDocName = documentDao.getByName(view.docName);
+            Country country = countryDao.getByCode(view.citizenshipCode);
+            UserDocument userDocument = mapperFacade.map(view, UserDocument.class);
+            userDocument.setDocument(document);
+            User user = mapperFacade.map(view, User.class);
+            user.setCountry(country);
+            if(officeDao.getById(view.officeId.longValue()) == null) {
+                throw new NoResultException("cannot find office with id:" + view.officeId);
+            }
+            userDao.save(user, userDocument);
         }
-        userDao.save(user, userDocument);
+        catch (NoResultException e) {
+            throw new NoResultException("cannot find document with code: " + view.docCode + " and with name: " + view.docName);
+        }
     }
 
     /**
