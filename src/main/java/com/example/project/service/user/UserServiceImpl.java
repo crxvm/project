@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void save(UserSaveView view) {
         Document document = documentDao.getByCode(view.docCode);
+        Document checkDocName = documentDao.getByName(view.docName);
         Country country = countryDao.getByCode(view.citizenshipCode);
         UserDocument userDocument = mapperFacade.map(view, UserDocument.class);
         userDocument.setDocument(document);

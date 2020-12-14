@@ -1,19 +1,12 @@
 package com.example.project.controller;
 
 
-import com.example.project.model.User;
-import com.example.project.service.user.UserService;
 import com.example.project.view.ResultView;
-import com.example.project.view.organization.OrganizationListInView;
-import com.example.project.view.organization.OrganizationListOutView;
-import com.example.project.view.organization.OrganizationSaveView;
-import com.example.project.view.organization.OrganizationView;
 import com.example.project.view.user.*;
 import com.example.project.view.wrapper.Data;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
@@ -24,12 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,11 +35,6 @@ public class TestUserController {
     private int port;
     private final RestTemplate rest = new RestTemplate();
 
-    @Autowired
-    EntityManager em;
-    @Autowired
-    UserService userService;
-
     /**
      * Тестирует метод getById(), для запроса api/user/{id:[\d]+}}
      * @see UserView
@@ -61,9 +45,8 @@ public class TestUserController {
         Integer id = 1;
         URI uri = new URI(HOST + ":" + port + API_PATH + id);
 
-        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
         ResponseEntity<Data<UserView>> response
-                = rest.exchange(uri, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>(){});
+                = rest.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<Data<UserView>>(){});
         Assert.assertEquals(200, response.getStatusCodeValue());
     }
 
@@ -77,44 +60,50 @@ public class TestUserController {
         URI uri = new URI(HOST + ":" + port + API_PATH + "save");
         UserSaveView view = new UserSaveView();
         view.officeId = 1;
-        view.firstName = "TestFName";
-        view.secondName = "TestSName";
-        view.middleName = "TestMName";
-        view.position = "TestPosition";
-        view.phone = "TestPhone";
+        view.firstName = "SaveFName";
+        view.secondName = "SaveSName";
+        view.middleName = "SaveMName";
+        view.position = "SavePosition";
+        view.phone = "SavePhone";
         view.docCode = "1";
         view.docName = "Passport";
-        view.docNumber = "TestNumber";
+        view.docNumber = "SaveNumber";
         view.citizenshipCode = "643";
         view.docDate = null;
         view.isIdentified = true;
 
         HttpEntity<UserSaveView> httpEntity = new HttpEntity<>(view, headers);
-        ResponseEntity<ResultView> responseEntity = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){});
-
+        ResponseEntity<ResultView> responseEntity = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<ResultView>(){});
         Assert.assertEquals(200, responseEntity.getStatusCodeValue());
 
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<User> criteria = cb.createQuery(User.class);
-        Root<User> user = criteria.from(User.class);
-        Join country = user.join("country");
-        Join userDocument = user.join("userDocument");
-        Join document = userDocument.join("document");
+        URI testListUri = new URI(HOST + ":" + port + API_PATH + "list");
+        UserListInView filter = new UserListInView();
+        filter.docCode = view.docCode;
+        filter.citizenshipCode = view.citizenshipCode;
+        filter.firstName = view.firstName;
+        filter.secondName = view.secondName;
+        filter.middleName = view.middleName;
+        filter.position = view.position;
+        filter.officeId = view.officeId;
 
-        List<Predicate> list = new ArrayList<>();
-        list.add(cb.like(user.get("firstName"), view.firstName));
-        list.add(cb.like(user.get("secondName"), view.secondName));
-        list.add(cb.like(user.get("middleName"), view.middleName));
-        list.add(cb.equal(user.get("officeId"), view.officeId));
-        list.add(cb.like(user.get("position"), view.position));
-        list.add(cb.like(user.get("phone"), view.phone));
-        list.add(cb.like(document.get("docCode"), view.docCode));
-        list.add(cb.like(document.get("docName"), view.docName));
-        list.add(cb.like(userDocument.get("docNumber"), view.docNumber));
-        list.add(cb.like(country.get("citizenshipCode"), view.citizenshipCode));
+        HttpEntity<UserListInView> httpEntityList = new HttpEntity<>(filter, headers);
+        UserListOutView outView = rest.exchange(testListUri, HttpMethod.POST, httpEntityList, new ParameterizedTypeReference<Data<List<UserListOutView>>>(){}).getBody().getData().get(0);
+        Long id = outView.id;
 
-        TypedQuery<User> query = em.createQuery(criteria.where(list.toArray(new Predicate[list.size()])));
-        Assert.assertNotNull(query.getResultList());
+        URI testIdUri = new URI(HOST + ":" + port + API_PATH + id);
+        UserView test = rest.exchange(testIdUri, HttpMethod.GET, null, new ParameterizedTypeReference<Data<UserView>>(){}).getBody().getData();
+
+        Assert.assertEquals(view.officeId, test.officeId);
+        Assert.assertEquals(view.firstName, test.firstName);
+        Assert.assertEquals(view.secondName, test.secondName);
+        Assert.assertEquals(view.middleName, test.middleName);
+        Assert.assertEquals(view.position, test.position);
+        Assert.assertEquals(view.phone, test.phone);
+        Assert.assertEquals(view.docName, view.docName);
+        Assert.assertEquals(view.docNumber, test.docNumber);
+        Assert.assertEquals(view.docDate, view.docDate);
+        Assert.assertEquals(view.isIdentified, view.isIdentified);
+
     }
 
     /**
@@ -128,23 +117,25 @@ public class TestUserController {
         UserUpdateView view = new UserUpdateView();
         view.id = 1L;
         view.officeId = 1;
-        view.firstName = "TestFName1";
-        view.secondName = "TestSName1";
-        view.middleName = "TestMName1";
-        view.position = "TestPosition1";
-        view.phone = "TestPhone1";
+        view.firstName = "UpdateFName";
+        view.secondName = "UpdateSName";
+        view.middleName = "UpdateMName";
+        view.position = "UpdatePosition";
+        view.phone = "UpdatePhone";
         view.docName = "Driver License";
-        view.docNumber = "Test1";
+        view.docNumber = "Update";
         view.citizenshipCode = "392";
         view.docDate = null;
         view.isIdentified = true;
 
         HttpEntity<UserUpdateView> httpEntity = new HttpEntity<>(view, headers);
-        ResponseEntity<ResultView> responseEntity = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){});
+        ResponseEntity<ResultView> responseEntity = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<ResultView>(){});
 
         Assert.assertEquals(200, responseEntity.getStatusCodeValue());
 
-        UserView test = userService.getById(view.id);
+        HttpEntity<String> httpEntityId = new HttpEntity<>(headers);
+        URI uriId = new URI(HOST + ":" + port + API_PATH + view.id);
+        UserView test = rest.exchange(uriId, HttpMethod.GET, httpEntityId, new ParameterizedTypeReference<Data<UserView>>(){}).getBody().getData();
         Assert.assertEquals(view.id, test.id);
         Assert.assertEquals(test.firstName, view.firstName);
         Assert.assertEquals(test.secondName, view.secondName);
@@ -169,16 +160,16 @@ public class TestUserController {
         URI uri = new URI(HOST + ":" + port + API_PATH + "list");
         UserListInView filter = new UserListInView();
         filter.officeId = 1;
-        filter.firstName = "TestFName1";
-        filter.secondName = "TestSName1";
-        filter.middleName = "TestMName1";
-        filter.position = "TestPosition1";
+        filter.firstName = "TestFName";
+        filter.secondName = "TestSName";
+        filter.middleName = "TestMName";
+        filter.position = "TestPosition";
         filter.citizenshipCode = "392";
         filter.docCode = "2";
 
         HttpEntity<UserListInView> httpEntity = new HttpEntity<>(filter, headers);
         ResponseEntity<Data<List<UserListOutView>>> response
-                = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){});
+                = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<Data<List<UserListOutView>>>(){});
         Assert.assertEquals(200, response.getStatusCodeValue());
         List<UserListOutView> view = response.getBody().getData();
 

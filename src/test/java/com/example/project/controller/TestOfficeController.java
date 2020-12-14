@@ -1,14 +1,11 @@
 package com.example.project.controller;
 
-import com.example.project.model.Office;
-import com.example.project.service.office.OfficeService;
 import com.example.project.view.ResultView;
 import com.example.project.view.office.*;
 import com.example.project.view.wrapper.Data;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
@@ -19,15 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,10 +35,6 @@ public class TestOfficeController {
     private int port;
     private final RestTemplate rest = new RestTemplate();
 
-    @Autowired
-    OfficeService officeService;
-    @Autowired
-    EntityManager em;
 
     /**
      * Тестирует метод getById(), для запроса api/office/{id:[\d]+}}
@@ -59,9 +46,8 @@ public class TestOfficeController {
         Integer id = 1;
         URI uri = new URI(HOST + ":" + port + API_PATH + id);
 
-        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
         ResponseEntity<Data<OfficeView>> response
-                = rest.exchange(uri, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>(){});
+                = rest.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<>(){});
         Assert.assertEquals(200, response.getStatusCodeValue());
     }
 
@@ -75,9 +61,9 @@ public class TestOfficeController {
         URI uri = new URI(HOST + ":" + port + API_PATH + "save");
         OfficeSaveView view = new OfficeSaveView();
         view.orgId = 1L;
-        view.address = "TestAddress";
-        view.name = "TestName";
-        view.phone = "TestPhone";
+        view.address = "SaveAddress";
+        view.name = "SaveName";
+        view.phone = "SavePhone";
         view.isActive = true;
 
         HttpEntity<OfficeSaveView> httpEntity = new HttpEntity<>(view, headers);
@@ -85,19 +71,25 @@ public class TestOfficeController {
                 = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){});
         Assert.assertEquals(response.getStatusCodeValue(), 200);
 
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Office> criteria = cb.createQuery(Office.class);
-        Root<Office> office = criteria.from(Office.class);
+        URI testListUri = new URI(HOST + ":" + port + API_PATH + "list");
+        OfficeListInView filter = new OfficeListInView();
+        filter.isActive = true;
+        filter.name = view.name;
+        filter.orgId = view.orgId.intValue();
+        filter.phone = view.phone;
 
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(cb.like(office.get("name"), view.name));
-        predicates.add(cb.like(office.get("address"), view.address));
-        predicates.add(cb.equal(office.get("orgId"), view.orgId));
-        predicates.add(cb.like(office.get("phone"), view.phone));
-        predicates.add(cb.equal(office.get("isActive"), view.isActive));
+        HttpEntity<OfficeListInView> httpEntityList = new HttpEntity<>(filter, headers);
+        OfficeListOutView outView =  rest.exchange(testListUri, HttpMethod.POST, httpEntityList, new ParameterizedTypeReference<Data<List<OfficeListOutView>>>(){}).getBody().getData().get(0);
+        Long id = outView.id.longValue();
 
-        TypedQuery<Office> query = em.createQuery(criteria.where(predicates.toArray(new Predicate[predicates.size()])));
-        Assert.assertNotNull(query.getResultList());
+
+        URI testIdUri = new URI(HOST + ":" + port + API_PATH + id);
+        OfficeView test = rest.exchange(testIdUri, HttpMethod.GET, null, new ParameterizedTypeReference<Data<OfficeView>>(){}).getBody().getData();
+        Assert.assertEquals(test.id.longValue(), outView.id.longValue());
+        Assert.assertEquals(test.address, view.address);
+        Assert.assertEquals(test.name, view.name);
+        Assert.assertEquals(test.phone, view.phone);
+        Assert.assertEquals(test.isActive, test.isActive);
     }
 
     /**
@@ -110,9 +102,9 @@ public class TestOfficeController {
         URI uri = new URI(HOST + ":" + port + API_PATH + "update");
         OfficeUpdateView view = new OfficeUpdateView();
         view.id = 1L;
-        view.address = "TestAddress1";
-        view.name = "TestName1";
-        view.phone = "TestPhone1";
+        view.address = "UpdateAddress";
+        view.name = "UpdateName";
+        view.phone = "UpdatePhone";
         view.isActive = true;
 
         HttpEntity<OfficeUpdateView> httpEntity = new HttpEntity<>(view, headers);
@@ -120,7 +112,8 @@ public class TestOfficeController {
                 = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){});
         Assert.assertEquals(response.getStatusCodeValue(), 200);
 
-        OfficeView test = officeService.getById(view.id);
+        URI testUri = new URI(HOST + ":" + port + API_PATH + view.id);
+        OfficeView test = rest.exchange(testUri, HttpMethod.GET, null, new ParameterizedTypeReference<Data<OfficeView>>(){}).getBody().getData();
         Assert.assertEquals(test.id, view.id);
         Assert.assertEquals(test.address, view.address);
         Assert.assertEquals(test.name, view.name);
@@ -140,9 +133,9 @@ public class TestOfficeController {
         URI uri = new URI(HOST + ":" + port + API_PATH + "list");
         OfficeListInView filter = new OfficeListInView();
         filter.isActive = true;
-        filter.name = "TestName1";
+        filter.name = "TestName";
         filter.orgId = 1;
-        filter.phone = "TestPhone1";
+        filter.phone = "TestPhone";
 
         HttpEntity<OfficeListInView> httpEntity = new HttpEntity<>(filter, headers);
         ResponseEntity<Data<List<OfficeListOutView>>> response

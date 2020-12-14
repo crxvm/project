@@ -1,7 +1,6 @@
 package com.example.project.controller;
 
-import com.example.project.model.Organization;
-import com.example.project.service.organization.OrganizationService;
+
 import com.example.project.view.ResultView;
 import com.example.project.view.organization.OrganizationListInView;
 import com.example.project.view.organization.OrganizationListOutView;
@@ -11,7 +10,6 @@ import com.example.project.view.wrapper.Data;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
@@ -19,15 +17,8 @@ import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,11 +35,6 @@ public class TestOrganizationController {
     private int port;
     private final RestTemplate rest = new RestTemplate();
 
-    @Autowired
-    OrganizationService organizationService;
-    @Autowired
-    EntityManager em;
-
     /**
      * Тестирует метод getById(), для запроса api/organization/{id:[\d]+}}
      * @see OrganizationView
@@ -59,9 +45,8 @@ public class TestOrganizationController {
         Integer id = 1;
         URI uri = new URI(HOST + ":" + port + API_PATH + id);
 
-        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
         ResponseEntity<Data<OrganizationView>> response
-                = rest.exchange(uri, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>(){});
+                = rest.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<Data<OrganizationView>>(){});
         Assert.assertEquals(200, response.getStatusCodeValue());
 
     }
@@ -75,34 +60,38 @@ public class TestOrganizationController {
     public void testSave() throws URISyntaxException {
         URI uri = new URI(HOST + ":" + port + API_PATH + "save");
         OrganizationSaveView view = new OrganizationSaveView();
-        view.fullName = "TestFullName";
-        view.address = "TestAddress";
-        view.name =  "TestName";
-        view.inn = "TestInn";
+        view.fullName = "SaveFullName";
+        view.address = "SaveAddress";
+        view.name =  "SaveName";
+        view.inn = "SaveInn";
         view.isActive = true;
-        view.kpp = "TestKpp";
-        view.phone = "TestPhone";
+        view.kpp = "SaveKpp";
+        view.phone = "SavePhone";
 
         HttpEntity<OrganizationSaveView> httpEntity = new HttpEntity<>(view, headers);
-        ResponseEntity<ResultView> responseEntity = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){});
+        ResponseEntity<ResultView> responseEntity = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<ResultView>(){});
 
         Assert.assertEquals(200, responseEntity.getStatusCodeValue());
 
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Organization> criteria = cb.createQuery(Organization.class);
-        Root<Organization> organization = criteria.from(Organization.class);
+        URI testListUri = new URI(HOST + ":" + port + API_PATH + "list");
+        OrganizationListInView filter = new OrganizationListInView();
+        filter.inn = view.inn;
+        filter.isActive = true;
+        filter.name = view.name;
 
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(cb.like(organization.get("fullName"), view.fullName));
-        predicates.add(cb.like(organization.get("name"), view.name));
-        predicates.add(cb.like(organization.get("address"), view.address));
-        predicates.add(cb.like(organization.get("inn"), view.inn));
-        predicates.add(cb.like(organization.get("kpp"), view.kpp));
-        predicates.add(cb.like(organization.get("phone"), view.phone));
-        predicates.add(cb.equal(organization.get("isActive"), view.isActive));
+        HttpEntity<OrganizationListInView> httpEntityList = new HttpEntity<>(filter, headers);
+        OrganizationListOutView outView = rest.exchange(testListUri, HttpMethod.POST, httpEntityList, new ParameterizedTypeReference<Data<List<OrganizationListOutView>>>(){}).getBody().getData().get(0);
+        Long id = outView.id;
 
-        TypedQuery<Organization> query = em.createQuery(criteria.where(predicates.toArray(new Predicate[predicates.size()])));
-        Assert.assertNotNull(query.getResultList());
+        URI testIdUri = new URI(HOST + ":" + port + API_PATH + id);
+        OrganizationView test = rest.exchange(testIdUri, HttpMethod.GET, null, new ParameterizedTypeReference<Data<OrganizationView>>(){}).getBody().getData();
+        Assert.assertEquals(view.address, test.address);
+        Assert.assertEquals(view.fullName, test.fullName);
+        Assert.assertEquals(view.name, test.name);
+        Assert.assertEquals(view.phone, test.phone);
+        Assert.assertEquals(view.inn, test.inn);
+        Assert.assertEquals(view.kpp, test.kpp);
+        Assert.assertEquals(view.isActive, test.isActive);
     }
 
     /**
@@ -114,20 +103,21 @@ public class TestOrganizationController {
     public void testUpdate() throws URISyntaxException {
         URI uri = new URI(HOST + ":" + port + API_PATH + "update");
         OrganizationView view = new OrganizationView();
-        view.id = 4L;
-        view.fullName = "TestFullName1";
-        view.address = "TestAddress1";
-        view.name =  "TestName1";
-        view.inn = "TestInn1";
+        view.id = 1L;
+        view.fullName = "UFullName";
+        view.address = "UAddress";
+        view.name =  "UName";
+        view.inn = "UInn";
         view.isActive = true;
-        view.kpp = "TestKpp1";
-        view.phone = "TestPhone1";
+        view.kpp = "UKpp";
+        view.phone = "UPhone";
 
         HttpEntity<OrganizationView> httpEntity = new HttpEntity<>(view, headers);
-        ResponseEntity<ResultView> responseEntity = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){});
+        ResponseEntity<ResultView> responseEntity = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<ResultView>(){});
 
         Assert.assertEquals(200, responseEntity.getStatusCodeValue());
-        OrganizationView test =  organizationService.getById(view.id);
+        URI testUri = new URI(HOST + ":" + port + API_PATH + view.id);
+        OrganizationView test = rest.exchange(testUri, HttpMethod.GET, null, new ParameterizedTypeReference<Data<OrganizationView>>(){}).getBody().getData();
         Assert.assertEquals(view.id, test.id);
         Assert.assertEquals(view.address, test.address);
         Assert.assertEquals(view.fullName, test.fullName);
@@ -150,13 +140,13 @@ public class TestOrganizationController {
     public void testList() throws URISyntaxException {
         URI uri = new URI(HOST + ":" + port + API_PATH + "list");
         OrganizationListInView filter = new OrganizationListInView();
-        filter.inn = "TestInn1";
+        filter.inn = "TestInn";
         filter.isActive = true;
-        filter.name = "TestName1";
+        filter.name = "TestName";
 
         HttpEntity<OrganizationListInView> httpEntity = new HttpEntity<>(filter, headers);
         ResponseEntity<Data<List<OrganizationListOutView>>> response
-                = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<>(){});
+                = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<Data<List<OrganizationListOutView>>>(){});
         Assert.assertEquals(200, response.getStatusCodeValue());
         List<OrganizationListOutView> view = response.getBody().getData();
 

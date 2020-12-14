@@ -40,13 +40,10 @@ public class TestDocController {
     public void testGetDocs() throws URISyntaxException {
         final URI uri = new URI(HOST + ":" + port + API_PATH);
 
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-
         ResponseEntity<Data<List<DocumentView>>> response
                 = rest.exchange(uri,
                 HttpMethod.GET,
-                httpEntity,
+                null,
                 new ParameterizedTypeReference<>() {
                 });
 

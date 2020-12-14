@@ -27,7 +27,6 @@ import static org.junit.Assert.*;
 public class TestCountryController {
     private final String HOST = "http://localhost";
     private final String API_PATH = "/api/countries";
-    private final HttpHeaders headers = new HttpHeaders();
     @LocalServerPort
     private int port;
     private final RestTemplate rest = new RestTemplate();
@@ -41,14 +40,10 @@ public class TestCountryController {
     public void testGetAllCountries() throws URISyntaxException {
         final URI URI_LIST = new URI(HOST + ":" + port + API_PATH);
 
-        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-
         ResponseEntity<Data<List<CountryView>>> response
                 = rest.exchange(URI_LIST,
                 HttpMethod.GET,
-                httpEntity,
+                null,
                 new ParameterizedTypeReference<>() {
                 });
 
