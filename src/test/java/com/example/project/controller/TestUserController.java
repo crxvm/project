@@ -1,24 +1,22 @@
 package com.example.project.controller;
 
-
 import com.example.project.view.ResultView;
 import com.example.project.view.user.*;
 import com.example.project.view.wrapper.Data;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+
 import java.util.List;
 
 /**
@@ -28,22 +26,21 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class TestUserController {
-    private final String HOST = "http://localhost";
     private final String API_PATH = "/api/user/";
     private final HttpHeaders headers = new HttpHeaders();
-    @LocalServerPort
-    private int port;
-    private final RestTemplate rest = new RestTemplate();
+
+    @Autowired
+    private TestRestTemplate rest;
 
     /**
      * Тестирует метод getById(), для запроса api/user/{id:[\d]+}}
      * @see UserView
-     * @throws URISyntaxException исколючение если не найдена ссылка
      */
     @Test
-    public void testGetById() throws URISyntaxException {
+    public void testGetById(){
         Integer id = 1;
-        URI uri = new URI(HOST + ":" + port + API_PATH + id);
+
+        String uri = API_PATH + id;
 
         ResponseEntity<Data<UserView>> response
                 = rest.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<Data<UserView>>(){});
@@ -53,11 +50,11 @@ public class TestUserController {
     /**
      * Тестирует метод save(), для запроса api/user/save
      * @see UserSaveView
-     * @throws URISyntaxException исколючение если не найдена ссылка
      */
     @Test
-    public void testSave() throws URISyntaxException {
-        URI uri = new URI(HOST + ":" + port + API_PATH + "save");
+    public void testSave()  {
+
+        String uri = API_PATH + "save";
         UserSaveView view = new UserSaveView();
         view.officeId = 1;
         view.firstName = "SaveFName";
@@ -76,7 +73,7 @@ public class TestUserController {
         ResponseEntity<ResultView> responseEntity = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<ResultView>(){});
         Assert.assertEquals(200, responseEntity.getStatusCodeValue());
 
-        URI testListUri = new URI(HOST + ":" + port + API_PATH + "list");
+        String testListUri = API_PATH + "list";
         UserListInView filter = new UserListInView();
         filter.docCode = view.docCode;
         filter.citizenshipCode = view.citizenshipCode;
@@ -90,7 +87,7 @@ public class TestUserController {
         UserListOutView outView = rest.exchange(testListUri, HttpMethod.POST, httpEntityList, new ParameterizedTypeReference<Data<List<UserListOutView>>>(){}).getBody().getData().get(0);
         Long id = outView.id;
 
-        URI testIdUri = new URI(HOST + ":" + port + API_PATH + id);
+        String testIdUri = API_PATH + id;
         UserView test = rest.exchange(testIdUri, HttpMethod.GET, null, new ParameterizedTypeReference<Data<UserView>>(){}).getBody().getData();
 
         Assert.assertEquals(view.officeId, test.officeId);
@@ -109,11 +106,11 @@ public class TestUserController {
     /**
      * Тестирует метод update(), для запроса api/user/update
      * @see UserUpdateView
-     * @throws URISyntaxException исколючение если не найдена ссылка
      */
     @Test
-    public void testUpdate() throws URISyntaxException {
-        URI uri = new URI(HOST + ":" + port + API_PATH + "update");
+    public void testUpdate() {
+        //URI uri = new URI(HOST + ":" + port + API_PATH + "update");
+        String uri = API_PATH + "update";
         UserUpdateView view = new UserUpdateView();
         view.id = 1L;
         view.officeId = 1;
@@ -129,13 +126,16 @@ public class TestUserController {
         view.isIdentified = true;
 
         HttpEntity<UserUpdateView> httpEntity = new HttpEntity<>(view, headers);
-        ResponseEntity<ResultView> responseEntity = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<ResultView>(){});
+        ResponseEntity<ResultView> responseEntity = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<ResultView>() {
+        });
 
         Assert.assertEquals(200, responseEntity.getStatusCodeValue());
 
         HttpEntity<String> httpEntityId = new HttpEntity<>(headers);
-        URI uriId = new URI(HOST + ":" + port + API_PATH + view.id);
-        UserView test = rest.exchange(uriId, HttpMethod.GET, httpEntityId, new ParameterizedTypeReference<Data<UserView>>(){}).getBody().getData();
+        //URI uriId = new URI(HOST + ":" + port + API_PATH + view.id);
+        String uriId = API_PATH + view.id;
+        UserView test = rest.exchange(uriId, HttpMethod.GET, httpEntityId, new ParameterizedTypeReference<Data<UserView>>() {
+        }).getBody().getData();
         Assert.assertEquals(view.id, test.id);
         Assert.assertEquals(test.firstName, view.firstName);
         Assert.assertEquals(test.secondName, view.secondName);
@@ -153,11 +153,11 @@ public class TestUserController {
      * @see UserListInView
      * @see UserListOutView
      * @see Data
-     * @throws URISyntaxException исколючение если не найдена ссылка
      */
     @Test
-    public void testList() throws URISyntaxException {
-        URI uri = new URI(HOST + ":" + port + API_PATH + "list");
+    public void testList()  {
+
+        String uri = API_PATH + "list";
         UserListInView filter = new UserListInView();
         filter.officeId = 1;
         filter.firstName = "TestFName";

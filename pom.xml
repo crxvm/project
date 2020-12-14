@@ -17,7 +17,7 @@
 	<description>Bell Integrator LP</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 		<swagger.version>1.5.3</swagger.version>
 		<orika.version>1.5.4</orika.version>
 		<boot.version>2.4.0</boot.version>
@@ -73,12 +73,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
+
 		</dependency>
 
 		<dependency>

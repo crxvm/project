@@ -5,15 +5,13 @@ import com.example.project.view.wrapper.Data;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -25,26 +23,22 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class TestCountryController {
-    private final String HOST = "http://localhost";
-    private final String API_PATH = "/api/countries";
-    @LocalServerPort
-    private int port;
-    private final RestTemplate rest = new RestTemplate();
 
+    private final String API_PATH = "/api/countries";
+    @Autowired
+    private TestRestTemplate rest;
     /**
      * Тестирует метод countries для запроса api/countries
-     * @throws URISyntaxException исколючение если не найдена ссылка
      * @see CountryView
      */
     @Test
-    public void testGetAllCountries() throws URISyntaxException {
-        final URI URI_LIST = new URI(HOST + ":" + port + API_PATH);
+    public void testGetAllCountries()  {
 
         ResponseEntity<Data<List<CountryView>>> response
-                = rest.exchange(URI_LIST,
+                = rest.exchange(API_PATH,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<>() {
+                new ParameterizedTypeReference<Data<List<CountryView>>>() {
                 });
 
         Data<List<CountryView>> data = response.getBody();

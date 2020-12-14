@@ -28,4 +28,12 @@ public interface DocumentDao {
      * @return объект {@link Document}
      */
     Document getByName(String docName);
+
+    /**
+     * Получить сущность по полям docName и docCode
+     * @param docName имя документа
+     * @param docCode код документя
+     * @return
+     */
+    Document getByNameAndCode(String docName, String docCode);
 }

@@ -10,15 +10,14 @@ import com.example.project.view.wrapper.Data;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+
 import java.util.List;
 
 /**
@@ -28,22 +27,20 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class TestOrganizationController {
-    private final String HOST = "http://localhost";
     private final String API_PATH = "/api/organization/";
     private final HttpHeaders headers = new HttpHeaders();
-    @LocalServerPort
-    private int port;
-    private final RestTemplate rest = new RestTemplate();
+
+    @Autowired
+    private TestRestTemplate rest;
 
     /**
      * Тестирует метод getById(), для запроса api/organization/{id:[\d]+}}
      * @see OrganizationView
-     * @throws URISyntaxException исколючение если не найдена ссылка
      */
     @Test
-    public void testGetById() throws URISyntaxException {
+    public void testGetById()  {
         Integer id = 1;
-        URI uri = new URI(HOST + ":" + port + API_PATH + id);
+        String uri = API_PATH + id;
 
         ResponseEntity<Data<OrganizationView>> response
                 = rest.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<Data<OrganizationView>>(){});
@@ -54,11 +51,10 @@ public class TestOrganizationController {
     /**
      * Тестирует метод save(), для запроса api/organization/save
      * @see OrganizationSaveView
-     * @throws URISyntaxException исколючение если не найдена ссылка
      */
     @Test
-    public void testSave() throws URISyntaxException {
-        URI uri = new URI(HOST + ":" + port + API_PATH + "save");
+    public void testSave()  {
+        String uri = API_PATH + "save";
         OrganizationSaveView view = new OrganizationSaveView();
         view.fullName = "SaveFullName";
         view.address = "SaveAddress";
@@ -73,7 +69,7 @@ public class TestOrganizationController {
 
         Assert.assertEquals(200, responseEntity.getStatusCodeValue());
 
-        URI testListUri = new URI(HOST + ":" + port + API_PATH + "list");
+        String testListUri = API_PATH + "list";
         OrganizationListInView filter = new OrganizationListInView();
         filter.inn = view.inn;
         filter.isActive = true;
@@ -83,7 +79,7 @@ public class TestOrganizationController {
         OrganizationListOutView outView = rest.exchange(testListUri, HttpMethod.POST, httpEntityList, new ParameterizedTypeReference<Data<List<OrganizationListOutView>>>(){}).getBody().getData().get(0);
         Long id = outView.id;
 
-        URI testIdUri = new URI(HOST + ":" + port + API_PATH + id);
+        String testIdUri = API_PATH + id;
         OrganizationView test = rest.exchange(testIdUri, HttpMethod.GET, null, new ParameterizedTypeReference<Data<OrganizationView>>(){}).getBody().getData();
         Assert.assertEquals(view.address, test.address);
         Assert.assertEquals(view.fullName, test.fullName);
@@ -97,11 +93,10 @@ public class TestOrganizationController {
     /**
      * Тестирует метод update(), для запроса api/organization/update
      * @see OrganizationView
-     * @throws URISyntaxException исколючение если не найдена ссылка
      */
     @Test
-    public void testUpdate() throws URISyntaxException {
-        URI uri = new URI(HOST + ":" + port + API_PATH + "update");
+    public void testUpdate()  {
+        String uri = API_PATH + "update";
         OrganizationView view = new OrganizationView();
         view.id = 1L;
         view.fullName = "UFullName";
@@ -116,7 +111,7 @@ public class TestOrganizationController {
         ResponseEntity<ResultView> responseEntity = rest.exchange(uri, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<ResultView>(){});
 
         Assert.assertEquals(200, responseEntity.getStatusCodeValue());
-        URI testUri = new URI(HOST + ":" + port + API_PATH + view.id);
+        String testUri = API_PATH + view.id;
         OrganizationView test = rest.exchange(testUri, HttpMethod.GET, null, new ParameterizedTypeReference<Data<OrganizationView>>(){}).getBody().getData();
         Assert.assertEquals(view.id, test.id);
         Assert.assertEquals(view.address, test.address);
@@ -134,11 +129,11 @@ public class TestOrganizationController {
      * @see OrganizationListInView
      * @see OrganizationListOutView
      * @see Data
-     * @throws URISyntaxException исколючение если не найдена ссылка
      */
     @Test
-    public void testList() throws URISyntaxException {
-        URI uri = new URI(HOST + ":" + port + API_PATH + "list");
+    public void testList()  {
+
+        String uri = API_PATH + "list";
         OrganizationListInView filter = new OrganizationListInView();
         filter.inn = "TestInn";
         filter.isActive = true;

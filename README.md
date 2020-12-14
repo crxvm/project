@@ -88,7 +88,7 @@ In:
   "inn":"", //обязательный параметр
   "kpp":"",  //обязательный параметр
   "address":"", //обязательный параметр
-  "phone","",
+  "phone":"",
   "isActive":"true"
 }
 ```
@@ -109,7 +109,7 @@ In:
   "inn":"", //обязательный параметр
   "kpp":"", //обязательный параметр
   "address":"", //обязательный параметр
-  "phone","",
+  "phone":"",
   "isActive":"true"
 }
 ```
@@ -128,7 +128,7 @@ In (фильтр):
   "orgId":"", //обязательный параметр
   "name":"",
   "phone":"",
-  "isActive" 
+  "isActive":"true"
 }
 ```
 Out:
@@ -152,7 +152,7 @@ Out:
   "id":"",
   "name":"",
   "address":"",
-  "phone","",
+  "phone":"",
   "isActive":"true"
 }
 ```
@@ -165,7 +165,7 @@ In:
   "id":"", //обязательный параметр
   "name":"", //обязательный параметр
   "address":"", //обязательный параметр
-  "phone","",
+  "phone":"",
   "isActive":"true" //пример
 }
 ```
@@ -185,7 +185,7 @@ In:
   "orgId":"", //обязательный параметр
   "name":"",
   "address":"",
-  "phone","",
+  "phone":"",
   "isActive":"true"
 }
 ```
@@ -205,9 +205,9 @@ In (фильтр):
 {
   "officeId":"", //обязательный параметр
   "firstName":"",
-  "lastName":"",
+  "secondName":"",
   "middleName":"",
-  "position","",
+  "position": "",
   "docCode":"",
   "citizenshipCode":""
 }
@@ -215,6 +215,7 @@ In (фильтр):
 
 Out:
 ```json5
+[
 {
   "id":"",
   "firstName":"",
@@ -222,6 +223,7 @@ Out:
   "middleName":"",
   "position":""
 }
+]
 ```
 
 10. api/user/{id}
@@ -235,8 +237,8 @@ Out:
   "firstName":"",
   "secondName":"",
   "middleName":"",
-  "position":""
-  "phone","",
+  "position":"",
+  "phone":"",
   "docName":"",
   "docNumber":"",
   "docDate":"",
@@ -257,8 +259,8 @@ In:
   "firstName":"", //обязательный параметр
   "secondName":"",
   "middleName":"",
-  "position":"" //обязательный параметр
-  "phone","",
+  "position":"", //обязательный параметр
+  "phone":"",
   "docName":"",
   "docNumber":"",
   "docDate":"",
@@ -283,8 +285,8 @@ In:
   "firstName":"", //обязательный параметр
   "secondName":"",
   "middleName":"",
-  "position":"" //обязательный параметр
-  "phone","",
+  "position":"", //обязательный параметр
+  "phone":"",
   "docCode":"",
   "docName":"",
   "docNumber":"",

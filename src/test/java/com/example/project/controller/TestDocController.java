@@ -5,14 +5,12 @@ import com.example.project.view.wrapper.Data;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -25,26 +23,23 @@ import static org.junit.Assert.fail;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class TestDocController {
-    private final String HOST = "http://localhost";
     private final String API_PATH = "/api/docs";
-    @LocalServerPort
-    private int port;
-    private final RestTemplate rest = new RestTemplate();
+    @Autowired
+    private TestRestTemplate rest;
 
     /**
      * Тестирует метод documents для запроса api/docs
      * @see DocumentView
-     * @throws URISyntaxException исколючение если не найдена ссылка
      */
     @Test
-    public void testGetDocs() throws URISyntaxException {
-        final URI uri = new URI(HOST + ":" + port + API_PATH);
+    public void testGetDocs()  {
+
 
         ResponseEntity<Data<List<DocumentView>>> response
-                = rest.exchange(uri,
+                = rest.exchange(API_PATH,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<>() {
+                new ParameterizedTypeReference<Data<List<DocumentView>>>() {
                 });
 
         Data<List<DocumentView>> data = response.getBody();
