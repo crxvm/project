@@ -18,7 +18,7 @@ mvn spring-boot:run
 Все описанные возвращаемые типы данных находятся в параметре data. В случае ошибки возвращается параметр error.
 
 Например, в случае, если запрос корректно отработает, бэк возвращает в body ответа:
-```json
+```json5
 {
     "data":{
         //то, что в параметре out
@@ -28,7 +28,7 @@ mvn spring-boot:run
 
 
 А в случае ошибки возвращает 
-```json
+```json5
 {
     "error":"текст ошибки"
 }
@@ -39,7 +39,7 @@ mvn spring-boot:run
 1. api/organization/list
 
 In (фильтр):
-```json
+```json5
 {
   "name":"", //обязательный параметр
   "inn":"",
@@ -48,7 +48,7 @@ In (фильтр):
 }
 ```
 Out:
-```json
+```json5
 [
   {
     "id":"",
@@ -64,7 +64,7 @@ Out:
 method:GET
 
 Out:
-```json
+```json5
 {
   "id":"",
   "name":"",
@@ -80,7 +80,7 @@ Out:
 3. api/organization/update
 
 In:
-```json
+```json5
 {
   "id":"", //обязательный параметр
   "name":"", //обязательный параметр
@@ -93,7 +93,7 @@ In:
 }
 ```
 Out:
-```json
+```json5
 {
     "result":"success"
 }
@@ -102,7 +102,7 @@ Out:
 4. api/organization/save
 
 In:
-```json
+```json5
 {
   "name":"", //обязательный параметр
   "fullName":"", //обязательный параметр
@@ -114,7 +114,7 @@ In:
 }
 ```
 Out:
-```json
+```json5
 {
     "result":"success"
 }
@@ -123,7 +123,7 @@ Out:
 5. api/office/list
 
 In (фильтр):
-```json
+```json5
 {
   "orgId":"", //обязательный параметр
   "name":"",
@@ -132,7 +132,7 @@ In (фильтр):
 }
 ```
 Out:
-```json
+```json5
 [
   {
     "id":"",
@@ -147,7 +147,7 @@ Out:
 method:GET
 
 Out:
-```json
+```json5
 {
   "id":"",
   "name":"",
@@ -160,7 +160,7 @@ Out:
 7. api/office/update
 
 In:
-```json
+```json5
 {
   "id":"", //обязательный параметр
   "name":"", //обязательный параметр
@@ -170,7 +170,7 @@ In:
 }
 ```
 Out:
-```json
+```json5
 {
     "result":"success"
 }
@@ -180,7 +180,7 @@ Out:
 8. api/office/save
 
 In:
-```json
+```json5
 {
   "orgId":"", //обязательный параметр
   "name":"",
@@ -191,7 +191,7 @@ In:
 ```
 
 Out:
-```json
+```json5
 {
     "result":"success"
 }
@@ -201,7 +201,7 @@ Out:
 9. api/user/list
 
 In (фильтр):
-```json
+```json5
 {
   "officeId":"", //обязательный параметр
   "firstName":"",
@@ -214,7 +214,7 @@ In (фильтр):
 ```
 
 Out:
-```json
+```json5
 {
   "id":"",
   "firstName":"",
@@ -229,7 +229,7 @@ Out:
 method:GET
 
 Out:
-```json
+```json5
 {
   "id":"",
   "firstName":"",
@@ -250,7 +250,7 @@ Out:
 11. api/user/update
 
 In:
-```json
+```json5
 {
   "id":"", //обязательный параметр
   "officeId":"",
@@ -268,7 +268,7 @@ In:
 ```
 
 Out:
-```json
+```json5
 {
     "result":"success"
 }
@@ -277,7 +277,7 @@ Out:
 12. api/user/save
 
 In:
-```json
+```json5
 {
   "officeId":"", //обязательный параметр
   "firstName":"", //обязательный параметр
@@ -297,7 +297,7 @@ In:
 Справочники:
 
 api/docs
-```json
+```json5
 [
   {
     "name":"Паспорт гражданина РФ",
@@ -310,7 +310,7 @@ api/docs
 Виды документов, удостоверяющих личность физического лица
 
 api/countries
-```json
+```json5
 [
   {
     "name":"Российская Федерация",
